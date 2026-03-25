@@ -250,18 +250,20 @@ body::before {
 }
 
 .stat-value {
-  font-family: var(--font-mono);
-  font-size: 22px;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
   color: var(--stone);
 }
 
 .stat-label {
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--slate);
-  margin-top: 2px;
+  margin-top: 4px;
+  font-weight: 500;
 }
 
 /* === SECTIONS === */
@@ -305,7 +307,8 @@ body::before {
 }
 
 .section h5 {
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -470,8 +473,9 @@ body::before {
 }
 
 .meter-label {
-  font-size: 12px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
   color: var(--slate);
   width: 60px;
   text-transform: uppercase;
@@ -496,7 +500,7 @@ body::before {
 .meter-dot.filled-reward { background: var(--moss); border-color: var(--moss); }
 
 .meter-value {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 12px;
   color: var(--slate);
 }
