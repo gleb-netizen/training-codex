@@ -1,0 +1,3065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Training Codex — Training Knowledge Base</title>
+<meta name="description" content="Climbing training knowledge base">
+<meta name="theme-color" content="#1a1814">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Training Codex">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone: #1a1814;
+  --chalk: #f5f0e8;
+  --chalk-dim: #e8e2d6;
+  --warm: #c4a882;
+  --warm-bright: #d4b892;
+  --ember: #c75d3a;
+  --ember-dim: #a04d30;
+  --moss: #6b8f71;
+  --moss-dim: #4a6b50;
+  --slate: #8a8578;
+  --slate-light: #b5ae9f;
+  --ink: #2d2a24;
+  --ink-light: #4a453c;
+  --glow: rgba(199, 93, 58, 0.08);
+  --radius: 6px;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--chalk);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === NOISE TEXTURE OVERLAY === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+
+/* === LAYOUT === */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+/* === SIDEBAR NAV === */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--stone);
+  color: var(--chalk-dim);
+  padding: 32px 0;
+  border-right: 1px solid rgba(196, 168, 130, 0.15);
+  z-index: 100;
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--ink-light); border-radius: 3px; }
+
+.sidebar-brand {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid rgba(196, 168, 130, 0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-brand h1 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--chalk);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.sidebar-brand .subtitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--slate);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.nav-section {
+  padding: 0 16px;
+  margin-bottom: 8px;
+}
+
+.nav-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--slate);
+  padding: 12px 8px 6px;
+  font-weight: 500;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  color: var(--slate-light);
+  text-decoration: none;
+  font-size: 13px;
+  border-radius: 5px;
+  transition: all 0.15s ease;
+  line-height: 1.4;
+}
+
+.nav-link:hover {
+  background: rgba(196, 168, 130, 0.08);
+  color: var(--chalk);
+}
+
+.nav-link.active {
+  background: rgba(199, 93, 58, 0.15);
+  color: var(--ember);
+}
+
+.nav-link .nav-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.nav-link .nav-label { font-weight: 400; }
+
+.nav-sub {
+  padding-left: 20px;
+}
+
+.nav-sub .nav-link {
+  font-size: 12.5px;
+  padding: 5px 10px;
+  color: var(--slate);
+}
+
+.sidebar-footer {
+  padding: 20px 24px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(196, 168, 130, 0.1);
+}
+
+.sidebar-footer p {
+  font-size: 11px;
+  color: var(--slate);
+  line-height: 1.5;
+}
+
+/* === MAIN CONTENT === */
+.main {
+  padding: 48px 64px 120px;
+  max-width: 900px;
+}
+
+/* === HERO === */
+.hero {
+  margin-bottom: 56px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(45, 42, 36, 0.1);
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ember);
+  font-weight: 500;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1.5px;
+  background: var(--ember);
+}
+
+.hero h2 {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--stone);
+  margin-bottom: 16px;
+}
+
+.hero h2 em {
+  font-style: italic;
+  color: var(--ember);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--slate);
+  max-width: 580px;
+  line-height: 1.7;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 28px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--stone);
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--slate);
+  margin-top: 2px;
+}
+
+/* === SECTIONS === */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: 32px;
+}
+
+.section-header {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(45, 42, 36, 0.08);
+}
+
+.section-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ember);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.section h3 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--stone);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.section h3 em { font-style: italic; }
+
+.section h4 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--stone);
+  margin: 32px 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.section h5 {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-light);
+  margin: 24px 0 10px;
+}
+
+.section p {
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+
+/* === CARDS === */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.card {
+  background: white;
+  border: 1px solid rgba(45, 42, 36, 0.08);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.card:hover {
+  border-color: rgba(199, 93, 58, 0.2);
+  box-shadow: 0 4px 20px rgba(45, 42, 36, 0.06);
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-bottom: 12px;
+}
+
+.badge-strength { background: rgba(199, 93, 58, 0.1); color: var(--ember); }
+.badge-technique { background: rgba(107, 143, 113, 0.12); color: var(--moss-dim); }
+.badge-finger { background: rgba(196, 168, 130, 0.2); color: var(--ink-light); }
+.badge-beginner { background: rgba(107, 143, 113, 0.12); color: var(--moss-dim); }
+.badge-intermediate { background: rgba(199, 93, 58, 0.1); color: var(--ember); }
+.badge-advanced { background: rgba(45, 42, 36, 0.08); color: var(--ink-light); }
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: var(--stone);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.card p {
+  font-size: 13.5px;
+  color: var(--slate);
+  line-height: 1.65;
+}
+
+/* === EXERCISE BLOCK === */
+.exercise {
+  background: white;
+  border: 1px solid rgba(45, 42, 36, 0.08);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin: 16px 0;
+  position: relative;
+}
+
+.exercise::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  background: var(--ember);
+  border-radius: 0 3px 3px 0;
+}
+
+.exercise-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--stone);
+  margin-bottom: 4px;
+}
+
+.exercise-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.exercise-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--slate);
+  background: var(--chalk);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.exercise p {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+/* === PROTOCOL TABLE === */
+.protocol-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13.5px;
+}
+
+.protocol-table thead {
+  background: var(--stone);
+  color: var(--chalk);
+}
+
+.protocol-table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.protocol-table th:first-child { border-radius: var(--radius) 0 0 0; }
+.protocol-table th:last-child { border-radius: 0 var(--radius) 0 0; }
+
+.protocol-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(45, 42, 36, 0.06);
+  color: var(--ink);
+}
+
+.protocol-table tr:last-child td { border-bottom: none; }
+
+.protocol-table tbody tr:hover {
+  background: var(--glow);
+}
+
+/* === RISK/REWARD METER === */
+.meter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0;
+}
+
+.meter-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate);
+  width: 60px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.meter-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.meter-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1.5px solid rgba(45, 42, 36, 0.15);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+.meter-dot.filled-risk { background: var(--ember); border-color: var(--ember); }
+.meter-dot.filled-reward { background: var(--moss); border-color: var(--moss); }
+
+.meter-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--slate);
+}
+
+/* === CALLOUT === */
+.callout {
+  background: var(--glow);
+  border-left: 3px solid var(--ember);
+  padding: 16px 20px;
+  margin: 18px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.callout-green {
+  background: rgba(107, 143, 113, 0.06);
+  border-left-color: var(--moss);
+}
+
+.callout-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ember);
+  margin-bottom: 6px;
+}
+
+.callout-green .callout-title { color: var(--moss-dim); }
+
+.callout p {
+  font-size: 14px;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* === FAQ === */
+.faq-item {
+  border: 1px solid rgba(45, 42, 36, 0.08);
+  border-radius: var(--radius);
+  margin: 8px 0;
+  background: white;
+  overflow: hidden;
+}
+
+.faq-question {
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--stone);
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.faq-question:hover { background: rgba(45, 42, 36, 0.02); }
+
+.faq-chevron {
+  font-size: 16px;
+  color: var(--slate);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-answer-inner {
+  padding: 0 20px 16px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+  border-top: 1px solid rgba(45, 42, 36, 0.06);
+  padding-top: 14px;
+}
+
+/* === SOURCE TAGS === */
+.source-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--slate);
+  background: rgba(45, 42, 36, 0.04);
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* === LISTS === */
+.clean-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+
+.clean-list li {
+  padding: 6px 0 6px 20px;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.clean-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--ember);
+  font-size: 12px;
+}
+
+.numbered-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: item;
+  margin: 12px 0;
+}
+
+.numbered-list li {
+  padding: 8px 0 8px 36px;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.65;
+  counter-increment: item;
+}
+
+.numbered-list li::before {
+  content: counter(item, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ember);
+  font-weight: 500;
+  top: 9px;
+}
+
+/* === DIVIDER === */
+.divider {
+  height: 1px;
+  background: rgba(45, 42, 36, 0.08);
+  margin: 40px 0;
+}
+
+/* === SEARCH BAR === */
+.search-wrapper {
+  position: relative;
+  margin-bottom: 36px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  border: 1px solid rgba(45, 42, 36, 0.12);
+  border-radius: var(--radius);
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-input::placeholder { color: var(--slate-light); }
+.search-input:focus { border-color: var(--ember); }
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--slate);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section { animation: fadeUp 0.5s ease both; }
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.1s; }
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed;
+    left: -300px;
+    width: 280px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+  }
+  .sidebar.open ~ .sidebar-overlay { display: block; }
+  .main { padding: 24px; }
+  .hero h2 { font-size: 32px; }
+  .mobile-toggle {
+    display: flex !important;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background: var(--stone);
+    color: var(--chalk);
+    border: none;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .card-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; gap: 20px; }
+}
+
+.mobile-toggle { display: none; }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h1>The Training<br>Codex</h1>
+    <div class="subtitle">Training Knowledge Base</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Overview</div>
+    <a href="#overview" class="nav-link active"><span class="nav-icon">◈</span><span class="nav-label">Quick Start</span></a>
+    <a href="#philosophy" class="nav-link"><span class="nav-icon">◇</span><span class="nav-label">Training Philosophy</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Finger Strength</div>
+    <a href="#hangboard" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Hangboarding</span></a>
+    <a href="#system-board" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">System Boards</span></a>
+    <a href="#campus" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Campus Boarding</span></a>
+    <a href="#grip-types" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Grip Types</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Pulling Strength</div>
+    <a href="#one-arm" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">One-Arm Pull-Up Path</span></a>
+    <a href="#pull-exercises" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Key Exercises</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Movement & Technique</div>
+    <a href="#body-tension" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Body Tension</span></a>
+    <a href="#dynamic" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Dynamic Movement</span></a>
+    <a href="#drills-beginner" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Beginner Drills</span></a>
+    <a href="#drills-intermediate" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Intermediate Drills</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Programming</div>
+    <a href="#efficiency" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Time-Efficient Training</span></a>
+    <a href="#periodization" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Periodization</span></a>
+    <a href="#recovery" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Recovery</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Expert Insights</div>
+    <a href="#tier-list" class="nav-link"><span class="nav-icon">★</span><span class="nav-label">Tool Tier List</span></a>
+    <a href="#rings" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Rings & Bodyweight</span></a>
+    <a href="#footwork-deep" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Footwork Mastery</span></a>
+    <a href="#ramping" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Ramping & Progression</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Mobility</div>
+    <a href="#hip-mobility" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Hip & High Feet</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Injury Prevention</div>
+    <a href="#injury-overview" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Overuse & Load Mgmt</span></a>
+    <a href="#finger-injuries" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Finger Injury Protocol</span></a>
+    <a href="#rehab-mindset" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Rehab Mindset</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Finger Training</div>
+    <a href="#finger-curls" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Finger Curl Protocol</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Mental Game</div>
+    <a href="#mental-game" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Confidence & Focus</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Reference</div>
+    <a href="#faq" class="nav-link"><span class="nav-icon">?</span><span class="nav-label">FAQ</span></a>
+    <a href="#protocols" class="nav-link"><span class="nav-icon">≡</span><span class="nav-label">Protocol Reference</span></a>
+    <a href="#sources" class="nav-link"><span class="nav-icon">◎</span><span class="nav-label">Sources</span></a>
+  </div>
+
+  <div class="nav-section" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(196, 168, 130, 0.15);">
+    <div class="nav-section-title">Calisthenics — Unstuck</div>
+    <a href="#cal-philosophy" class="nav-link"><span class="nav-icon">◆</span><span class="nav-label">Strength First Philosophy</span></a>
+    <a href="#cal-5ps" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">The 5Ps Framework</span></a>
+    <a href="#cal-progression" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">The .5 Progression Path</span></a>
+    <a href="#cal-big5" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">The Big Five Movements</span></a>
+    <a href="#cal-zones" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Three Training Zones</span></a>
+    <a href="#cal-overload" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Progressive Overload</span></a>
+    <a href="#cal-scapula" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Scapula & Core</span></a>
+    <a href="#cal-programming" class="nav-link"><span class="nav-icon">▪</span><span class="nav-label">Weekly Programming</span></a>
+    <a href="#cal-faq" class="nav-link"><span class="nav-icon">?</span><span class="nav-label">Calisthenics FAQ</span></a>
+  </div>
+
+  <div class="sidebar-footer">
+    <p>Compiled from 12 expert climbing videos + Unstuck calisthenics book. Climbing strength, technique & programming + bodyweight progressions in one reference guide.</p>
+  </div>
+</nav>
+
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero" id="overview">
+    <div class="hero-eyebrow">Personal Training Reference</div>
+    <h2>Everything I've learned about getting <em>stronger</em> — on the wall and off it</h2>
+    <p class="hero-desc">A comprehensive knowledge base covering climbing and calisthenics. Compiled from 12 expert climbing videos + the Unstuck calisthenics book — finger strength, pulling power, movement technique, injury prevention, mobility, mental game, training efficiency, tool rankings, bodyweight progressions, and the .5 Progression Path. Searchable, organized, and ready to reference before any session.</p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">12</div>
+        <div class="stat-label">Source Videos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">58.5K</div>
+        <div class="stat-label">Words Distilled</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">165 min</div>
+        <div class="stat-label">Total Content</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">40+</div>
+        <div class="stat-label">Exercises & Drills</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrapper">
+    <span class="search-icon">⌕</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search exercises, protocols, concepts...">
+  </div>
+
+  <!-- TRAINING PHILOSOPHY -->
+  <div class="section" id="philosophy">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <h3>Training <em>Philosophy</em></h3>
+    </div>
+
+    <p>Climbing is a fundamentally movement-based sport where strength makes things easier but isn't the primary driver of progression — especially at beginner and intermediate levels. In fact, too much strength can actually damage your climbing skill since it allows you to move incorrectly.</p>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Core Principle</div>
+      <p>For every incorrect move you perform, the more you train in an unbalanced way. Movement quality comes first; strength supports it.</p>
+    </div>
+
+    <p>Training doesn't have to take as long as you think. A minimalist approach — fewer sets, higher intensity, better recovery — can deliver 90% of the gains in a fraction of the time. The key is making every set count and training with intention.</p>
+
+    <h4>The Three Pillars</h4>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-technique">Pillar 1</div>
+        <div class="card-title">Movement Quality</div>
+        <p>Efficient movement patterns, dynamic and static integration, footwork, hip positioning. This is the foundation everything else builds on.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Pillar 2</div>
+        <div class="card-title">Finger & Pull Strength</div>
+        <p>Contact strength, max hang capacity, pulling power. The physical engine that makes harder moves possible once your technique is dialed.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Pillar 3</div>
+        <div class="card-title">Smart Programming</div>
+        <p>Periodization, recovery, time efficiency. Getting more from less by training strategically rather than just training more.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINGER STRENGTH: HANGBOARD -->
+  <div class="section" id="hangboard">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <h3>Hangboarding <span class="source-tag">SRC: Strong Fingers</span></h3>
+    </div>
+
+    <p>Hangboarding takes practice from regular gym strength training principles, applying the three energy systems — aerobic, anaerobic lactic, and anaerobic alactic — to finger training. It's the most structured and most researched approach to finger strength in climbing.</p>
+
+    <h4>Two Core Protocols</h4>
+
+    <div class="exercise">
+      <div class="exercise-name">Max Hangs</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Anaerobic Alactic</span>
+        <span class="exercise-tag">&lt;10s load time</span>
+        <span class="exercise-tag">Max strength</span>
+      </div>
+      <p>Load as much weight as you safely can — enough that you can't hold it for more than 10 seconds — then hang for 5 seconds. This maximizes the force you can produce through your fingers. Best done <strong>before a climbing session</strong> as it recruits your fingers without exhausting them.</p>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-name">Repeaters</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Anaerobic Lactic</span>
+        <span class="exercise-tag">7s on / 3s off</span>
+        <span class="exercise-tag">Muscle building</span>
+      </div>
+      <p>7 seconds hanging, 3 seconds rest (chalk up, wiggle fingers), repeat. Much lower load but longer duration. Trains the anaerobic lactic system which builds more muscle volume. Better for those who find max hangs mentally difficult due to load fluctuations.</p>
+    </div>
+
+    <h4>Honest Assessment</h4>
+    <p><strong>The good:</strong> Very structured, easy to track with a logbook, progressive overload is straightforward. If you're having a bad day, reduce load. Good day, increase it. Simple.</p>
+
+    <p><strong>The limitations:</strong> Not especially sport-specific. You're strengthening tendons in a static, isometric position — but climbing involves dynamic contact strength (engaging fingers as rapidly as possible when catching a hold). Isometric exercises are great for tendons but not ideal for building muscles; you'd want a larger range of motion for that (e.g., finger curls).</p>
+
+    <div class="callout">
+      <div class="callout-title">Key Insight</div>
+      <p>The biggest issue with hangboarding: when climbing, you're rarely doing completely static moves. Contact strength — the ability to contract your fingers as quickly as possible — is often more important than static hang capacity. Hangboarding doesn't train this.</p>
+    </div>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Dave MacLeod's Take (S-Tier)</div>
+      <p>"The most convenient, simple, effective, accessible training tool — for climbers from their first few months through elite level." However, he reached 8C/V15 without one. Its biggest advantages: <strong>doesn't wear your skin out</strong> (great after heavy plastic sessions) and <strong>very safe</strong> (just put your feet down if there's a problem). Another benefit he highlights: when you mix up training methods after years of just climbing, the novelty creates a big jump in strength.</p>
+    </div>
+
+    <h5>Risk / Reward</h5>
+    <div class="meter-row">
+      <span class="meter-label">Risk</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot"></div>
+        <div class="meter-dot"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">2/5 — Very safe with a logbook</span>
+    </div>
+    <div class="meter-row">
+      <span class="meter-label">Reward</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">3/5 — Useful but won't change your life alone</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINGER STRENGTH: SYSTEM BOARDS -->
+  <div class="section" id="system-board">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <h3>System Boards <span class="source-tag">SRC: Strong Fingers</span></h3>
+    </div>
+
+    <p>The "holy grail" of finger strength for many — and the one-way ticket to injury for others. System boards (Moon Board, Kilter Board, Grasshopper Board) let you track boulders in an app, compete globally, and build a frame of reference for progression.</p>
+
+    <h4>Why They Work</h4>
+    <ul class="clean-list">
+      <li>Strengthens fingers aggressively through sustained challenging climbing</li>
+      <li>Develops body tension that hangboarding completely misses</li>
+      <li>Incredibly sport-specific — you're actually climbing</li>
+      <li>International benchmarking through shared grade systems</li>
+      <li>Great fun factor which drives consistency</li>
+    </ul>
+
+    <h4>Why They're Dangerous</h4>
+    <ul class="clean-list">
+      <li>Loses trackability — you're logging arbitrary grades, not measurable force output</li>
+      <li>Holds (especially Moon Board) are incredibly sharp and stressful on skin and tendons</li>
+      <li>Extremely easy to overdo — the fun factor masks accumulated fatigue</li>
+      <li>Getting stronger on bigger holds ≠ getting finger-stronger (might just be full-body gains)</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title">Best Practice</div>
+      <p>Follow benchmark systems to build a base of reference grades. Limit to 1–2 sessions per week. Be analytical about your body's tolerance. If you can, find someone experienced to coach you through the movements — sloppy board climbing hurts more than it helps.</p>
+    </div>
+
+    <h5>Risk / Reward</h5>
+    <div class="meter-row">
+      <span class="meter-label">Risk</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">4/5 — Inevitable injury if overdone</span>
+    </div>
+    <div class="meter-row">
+      <span class="meter-label">Reward</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">4/5 — Comprehensive gains if managed well</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINGER STRENGTH: CAMPUS -->
+  <div class="section" id="campus">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <h3>Campus Boarding <span class="source-tag">SRC: Strong Fingers</span></h3>
+    </div>
+
+    <p>A hybrid of the structured (hangboard) and chaotic (system board) approaches. Campus boarding is highly trackable — all holds are similar, nothing changes in the setup. It combines sport-specificity with measurability.</p>
+
+    <h4>The Key Exercise: Latches</h4>
+    <div class="exercise">
+      <div class="exercise-name">One-Arm Latches</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Contact Strength</span>
+        <span class="exercise-tag">Sport-Specific</span>
+        <span class="exercise-tag">Trackable</span>
+      </div>
+      <p>Jump from the ground, latch a hold with a slightly bent arm, lock it, move to the next hold, jump down, repeat. Imitates doing a hard move → catching a hold → getting ready for the next hard move. This is the single best exercise for <strong>contact strength</strong> — engaging fingers as rapidly as possible. Start with both hands if single-arm is too difficult. Progress by reducing hold size.</p>
+    </div>
+
+    <h4>Progression Path</h4>
+    <ol class="numbered-list">
+      <li>Start with larger holds — focus on back activation and learning to swing efficiently</li>
+      <li>Two-arm latches to build the pattern</li>
+      <li>Progress to one-arm latches on larger holds</li>
+      <li>Reduce hold size progressively</li>
+      <li>Once your body knows how to move on the campus board, introduce finger strength focus</li>
+    </ol>
+
+    <div class="callout">
+      <div class="callout-title">Critical Rule</div>
+      <p>If you're catching holds with extended arms or without solid engagement, stop. The risk of shoulder, finger, and elbow injuries skyrockets with sloppy campusing. You must be analytical about your ability.</p>
+    </div>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Dave MacLeod's Take (C-Tier)</div>
+      <p>MacLeod rates campus boarding a C — he's injured himself "a good few times" on it. It trains power (force × velocity), rate of force development, and connective tissue stiffness. But: it's dangerous, uses no footwork, and the "video game" fun factor constantly tempts you to overdo it. <strong>"Ramping — a gradual progression of load — is one of the most important words anyone can learn in training."</strong> The campus board punishes those who skip the ramp.</p>
+    </div>
+
+    <h5>Risk / Reward</h5>
+    <div class="meter-row">
+      <span class="meter-label">Risk</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">3/5 — Requires discipline and awareness</span>
+    </div>
+    <div class="meter-row">
+      <span class="meter-label">Reward</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+      </div>
+      <span class="meter-value">3-5/5 — Depends entirely on how well you track it</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- GRIP TYPES -->
+  <div class="section" id="grip-types">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <h3>Grip Types <span class="source-tag">SRC: First Year</span></h3>
+    </div>
+
+    <p>Three grip types form the foundation. At beginner levels, you don't need to train finger strength — just learn the positions correctly. Use a hangboard with feet on the ground to memorize the shapes.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-finger">Position 1</div>
+        <div class="card-title">Half Crimp</div>
+        <p>Fingers at 90° angle. The workhorse grip in climbing. Practice: 5s on, 5s off × 5 reps on a hangboard edge with feet on the ground.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Position 2</div>
+        <div class="card-title">Open-Hand (3-Finger Drag)</div>
+        <p>Index, middle, and ring finger stretched out. More tendon-friendly than crimping. Same protocol: 5s on, 5s off × 5.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Position 3</div>
+        <div class="card-title">Sloper Grip</div>
+        <p>Fingers squeezed together on a rounded hold. Forces full-body engagement for efficient force output. Same 5/5/5 protocol.</p>
+      </div>
+    </div>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Beginners</div>
+      <p>Do NOT let your feet leave the ground when doing these. It's about memorizing the grip shapes, not loading your tendons. Actual finger strength comes from just climbing.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ONE ARM PULL-UP -->
+  <div class="section" id="one-arm">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <h3>The One-Arm Pull-Up <em>Path</em> <span class="source-tag">SRC: One Arm Pull-Up</span></h3>
+    </div>
+
+    <p>A one-arm pull-up is a great benchmark of pulling strength for climbing. Many strong climbers can't do one — there's much more to climbing than pulling power. But the <em>journey</em> to achieving one builds an excellent foundation for climbing strength and conditioning.</p>
+
+    <div class="callout">
+      <div class="callout-title">Key Context</div>
+      <p>A one-arm pull-up loads the brachialis to a greater degree due to its unilateral nature. The pec muscle is also involved in the initial pull. These exercises should come after climbing/skill work, or ideally on a separate day to maintain quality and intensity.</p>
+    </div>
+
+    <div id="pull-exercises">
+    <h4>Three Key Exercises</h4>
+
+    <div class="exercise">
+      <div class="exercise-name">1. Hammer Curls</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Any level</span>
+        <span class="exercise-tag">Brachialis focus</span>
+        <span class="exercise-tag">Dumbbells</span>
+      </div>
+      <p>Forearm in neutral position (not supinated like a regular bicep curl). Targets the brachialis specifically, which gets loaded heavily in one-arm pulling.</p>
+      <p><strong>Hypertrophy:</strong> 3–4 sets × 8–12 reps<br>
+      <strong>Max strength:</strong> 3–4 sets × 5–8 reps (heavier weight)</p>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-name">2. Archer Pull-Ups</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Intermediate+</span>
+        <span class="exercise-tag">Asymmetric load</span>
+        <span class="exercise-tag">Bar only</span>
+      </div>
+      <p>Pull your body towards one hand — a greater proportion of load goes through one shoulder, lats, and biceps. More specific to one-arm pulling and gets you into the deep lock-off position. Easily scalable with a weight belt.</p>
+      <p><strong>Protocol:</strong> 8 total reps alternating right-left (4 per side)</p>
+      <p><em>Can't do archer pull-ups yet?</em> Stick with weighted conventional pull-ups until this becomes accessible.</p>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-name">3. One-Arm Lock-Offs</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Advanced</span>
+        <span class="exercise-tag">Isometric</span>
+        <span class="exercise-tag">90° + 120°</span>
+      </div>
+      <p>Isometric holds at specific joint angles. You can produce more force isometrically, so this becomes accessible before a full one-arm pull-up while still progressively overloading.</p>
+      <p><strong>Protocol:</strong> 4 sets at 90° + 4 sets at 120° — hold for 5–10 seconds before adding load.<br>
+      <strong>Rest:</strong> 2–3 minutes between sets.<br>
+      <strong>Avoid:</strong> Very deep lock-offs — high compression stress on the elbow unless project-specific.</p>
+    </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BODY TENSION -->
+  <div class="section" id="body-tension">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <h3>Body Tension <span class="source-tag">SRC: Intermediate Drills</span></h3>
+    </div>
+
+    <p>Body tension is a kinetic chain from toes to fingers. If any macro body part isn't being used, you have a gap. Most intermediate (and even some advanced) climbers have tension gaps they don't realize.</p>
+
+    <h4>Drill: No Hip Drop on Overhangs</h4>
+    <div class="exercise">
+      <div class="exercise-name">Overhang Climbing — No Hip Drop</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">V4+ recommended</span>
+        <span class="exercise-tag">Full-body tension</span>
+        <span class="exercise-tag">Overhung wall / board</span>
+      </div>
+      <p>Climb slightly overhung walls and do reachy moves without letting your hip drop. This forces full-body tension — lock off with arms, stand hard and pull with hamstrings to keep lower body high and hips close to the wall.</p>
+    </div>
+
+    <h5>Progressions (from easiest to hardest)</h5>
+    <ol class="numbered-list">
+      <li><strong>Basic no hip drop:</strong> Keep hips close to the wall during reachy moves on moderate overhangs</li>
+      <li><strong>Hip follow-through:</strong> Flex your glutes to angle hips even higher — builds mind-muscle connection to posterior chain</li>
+      <li><strong>Hover hips:</strong> Combine no-hip-drop with hover hands (hold hand over hold for 2s before grabbing). Simulates crux sequences.</li>
+      <li><strong>Steeper angles:</strong> More overhang = more force required to maintain position</li>
+      <li><strong>Open hip positions:</strong> Hardest. No biomechanical advantage from twisting — pure muscular activation required</li>
+    </ol>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DYNAMIC MOVEMENT -->
+  <div class="section" id="dynamic">
+    <div class="section-header">
+      <div class="section-number">08</div>
+      <h3>Dynamic Movement <span class="source-tag">SRC: Intermediate Drills + First Year</span></h3>
+    </div>
+
+    <p>As grades get harder, two things become generally true: moves will be too hard to pull with raw strength (you need momentum), and specific positions are required just to make moves possible (you need tension). These concepts work <em>together</em>, not in opposition.</p>
+
+    <h4>Drill: Straight Arms to Strong Shoulders</h4>
+    <div class="exercise">
+      <div class="exercise-name">Straight-Arm Dynamic Climbing</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">Below max grade</span>
+        <span class="exercise-tag">Momentum generation</span>
+        <span class="exercise-tag">Creative problem-solving</span>
+      </div>
+      <p>Climb a few grades below your max generating power only with straight arms. No locking off. This teaches you to generate momentum with your lower body rather than muscling through with your arms. Arms can bend when loading up, but the goal is to never lock off.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">The Strong Shoulders Rule</div>
+      <p>Don't hit holds with limp shoulders. If you catch a hold with disengaged shoulders, you need a two-step process (pull into position → engage muscles). If arms are already bent and engaged when you make contact, you can lock in instantly. This is why many intermediate climbers fail to land dynamic moves — it's not the throw, it's the catch.</p>
+    </div>
+
+    <h4>Movement Vocabulary</h4>
+    <ul class="clean-list">
+      <li><strong>Corkscrews:</strong> Dynamically throw yourself into a backstep or drop knee</li>
+      <li><strong>Corkscrew + lateral swing:</strong> Combine rotation with sideways momentum for far reaches while keeping hips close</li>
+      <li><strong>Knee jerks:</strong> Throw your knee down hard to reach a hold — great for short climbers</li>
+      <li><strong>Pogos:</strong> Bounce-style movements using leg spring</li>
+      <li><strong>Step-up dead points:</strong> Step up forcefully and release at the apex</li>
+    </ul>
+
+    <h4>Beginner Dynamic Drill</h4>
+    <div class="exercise">
+      <div class="exercise-name">The Rubber Band Drill</div>
+      <div class="exercise-meta">
+        <span class="exercise-tag">V0–V1</span>
+        <span class="exercise-tag">Vertical to 20°</span>
+        <span class="exercise-tag">No stopping</span>
+      </div>
+      <p>"Be like rubber on the wall." Pick a very easy boulder and climb it without stopping at any point — seamless movement between all holds. Bouncing between holds using hip momentum and straight arms. If you stop, figure out why and how to avoid it next time. Rest 2–3 min, then do 2 more boulders.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BEGINNER DRILLS -->
+  <div class="section" id="drills-beginner">
+    <div class="section-header">
+      <div class="section-number">09</div>
+      <h3>Beginner Drill <em>Library</em> <span class="source-tag">SRC: First Year</span></h3>
+    </div>
+
+    <p>Targeting V0 to V5 (average climber reaches V5 in ~2.5 years). These prioritize movement quality over strength. Train ~2 days/week at this level.</p>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Drill</th>
+          <th>What</th>
+          <th>Sets × Reps</th>
+          <th>When</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Dynamic Drill</strong></td>
+          <td>Climb V0–V1 without stopping. Seamless movement.</td>
+          <td>3 boulders</td>
+          <td>Start of session</td>
+        </tr>
+        <tr>
+          <td><strong>No-Hand Slab</strong></td>
+          <td>Climb an inclined wall using only feet and hips. Hands hover for safety only.</td>
+          <td>6 ascents</td>
+          <td>Mid-session</td>
+        </tr>
+        <tr>
+          <td><strong>Negative Pull-Ups</strong></td>
+          <td>Jump to top of bar, slowly lower down. Leave 1–2 reps in the tank.</td>
+          <td>3 × 5 reps, 2min rest</td>
+          <td>After climbing</td>
+        </tr>
+        <tr>
+          <td><strong>Grip Memorization</strong></td>
+          <td>Half crimp, open hand, sloper — feet stay on ground.</td>
+          <td>5s on / 5s off × 5 each</td>
+          <td>Anytime</td>
+        </tr>
+        <tr>
+          <td><strong>Mistake Practice</strong></td>
+          <td>Flash-level boulder: climb → find 1 thing to improve → repeat. 3–4 boulders.</td>
+          <td>45–60 min total</td>
+          <td>Main session</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-green callout">
+      <div class="callout-title">The Mistake Practice Drill</div>
+      <p>This is the longest exercise but makes the biggest difference. Elite climbers obsess about correcting mistakes. Climb a flash-level boulder, identify one thing to improve, rest 2–5 min, then execute on just that one thing. Repeat across 3–4 boulders. You'll progress way faster than going by intuition alone.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- INTERMEDIATE DRILLS -->
+  <div class="section" id="drills-intermediate">
+    <div class="section-header">
+      <div class="section-number">10</div>
+      <h3>Intermediate Drill <em>Library</em> <span class="source-tag">SRC: Intermediate Drills</span></h3>
+    </div>
+
+    <p>For V4–V6+ climbers experiencing slow progression. These drills address the most common gaps: underdeveloped body tension and limited dynamic movement vocabulary.</p>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Drill</th>
+          <th>Focus</th>
+          <th>Key Cue</th>
+          <th>Progression</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>No Hip Drop</strong></td>
+          <td>Full-body tension, posterior chain</td>
+          <td>Keep hips close to wall on reachy moves</td>
+          <td>Hip follow-through → Hover hips → Steeper angles → Open hip</td>
+        </tr>
+        <tr>
+          <td><strong>Straight Arms</strong></td>
+          <td>Momentum generation, lower body power</td>
+          <td>No lock-offs. Power from legs only.</td>
+          <td>Corkscrews → Knee jerks → Pogos → Combined sequences</td>
+        </tr>
+        <tr>
+          <td><strong>Strong Shoulders</strong></td>
+          <td>Dynamic catch quality</td>
+          <td>Hit holds with engaged (bent arm) shoulders</td>
+          <td>Combine with straight-arm drill for full sequences</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">Selection Criteria Used</div>
+      <p>These drills were selected as: highest-leverage skills for proficient climbing at intermediate grades, commonly neglected by most intermediate climbers, and not overlapping with beginner drill content.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIME EFFICIENCY -->
+  <div class="section" id="efficiency">
+    <div class="section-header">
+      <div class="section-number">11</div>
+      <h3>Time-Efficient <em>Training</em> <span class="source-tag">SRC: 10 Science-Based</span></h3>
+    </div>
+
+    <p>10 science-backed methods for getting stronger in less time. Most of your workout is rest time — there's enormous room for optimization.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-strength">Method 1</div>
+        <div class="card-title">Train Like a Minimalist</div>
+        <p>2–3 sets per week to failure is enough to increase 1RM in intermediate lifters. A handful of working sets of 1–5 reps on major lifts per week should be sufficient. Newer lifters see fast gains with very little volume.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Method 2</div>
+        <div class="card-title">Faster, Harder Sets</div>
+        <p>Perform reps as fast as possible at given weight. 3–5 reps at RPE 7–9 (or ~80% 1RM). Occasionally test failure to calibrate your RPE — research shows people are bad at knowing how hard they're trying.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Method 3</div>
+        <div class="card-title">Strategic Rest Time</div>
+        <p>Use a timer. Short rests (1–2 min) compromise performance; excessively long rests bloat sessions. Use rest for stretching, mobility, or coordination drills. Avoid intense stretches >30s of the muscle group you're about to work.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Method 4</div>
+        <div class="card-title">Supercharge Your Warm-Up</div>
+        <p>Combine fingerboarding into warm-up. 3 sets of 3 reps at 5RM. You'll need fewer warm-up routes before trying hard. Other strength exercises can slot in too — just don't exhaust yourself pre-session.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Method 5</div>
+        <div class="card-title">Split Training Times</div>
+        <p>You don't have to train everything in one chunk. Climb in the morning, strength at home later. Fingerboard at home before the gym. Stretching in a free evening half hour.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Method 6</div>
+        <div class="card-title">Strategic Supersets</div>
+        <p>Pair exercises that fatigue different muscles (push-pull pairs). A 2023 study: superset bench+squats had similar strength gains but better endurance and time efficiency vs traditional sets. Never superset same-muscle exercises.</p>
+      </div>
+    </div>
+
+    <h4>More Quick Wins</h4>
+    <ul class="clean-list">
+      <li><strong>Compound over isolation:</strong> Compound bilateral exercises save time. But don't skip one-arm pull-ups just because they're unilateral — they're too valuable for climbers.</li>
+      <li><strong>Have a plan:</strong> Arrive at the gym knowing exactly what you'll do. No plan = wasted time, every time.</li>
+      <li><strong>Pre-workout caffeine:</strong> Even habitual consumers see a small but real performance benefit (research-backed).</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PERIODIZATION -->
+  <div class="section" id="periodization">
+    <div class="section-header">
+      <div class="section-number">12</div>
+      <h3>Periodization <span class="source-tag">SRC: 10 Science-Based</span></h3>
+    </div>
+
+    <p>You can't improve every facet of climbing — strength, flexibility, skill — all at once. Divide training into 6–8 week blocks:</p>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Block</th>
+          <th>Focus</th>
+          <th>Deprioritize</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Strength Block</strong></td>
+          <td>Hard strength training, limit bouldering</td>
+          <td>Endurance, volume climbing</td>
+        </tr>
+        <tr>
+          <td><strong>Endurance Block</strong></td>
+          <td>Dial back intensity, endurance exercises</td>
+          <td>Max strength work</td>
+        </tr>
+        <tr>
+          <td><strong>Performance Block</strong></td>
+          <td>Skill acquisition, climbing performance, projects</td>
+          <td>Dedicated strength training</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>In the long run, this makes gains in numerous areas that you can't accomplish by doing everything simultaneously. It also makes training feel less overwhelming on a tight schedule.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RECOVERY -->
+  <div class="section" id="recovery">
+    <div class="section-header">
+      <div class="section-number">13</div>
+      <h3>Recovery <span class="source-tag">SRC: 10 Science-Based</span></h3>
+    </div>
+
+    <p>Every set needs to count for strength gains. Every rest day needs to count for actual progress. You need to be relatively fresh entering the gym — too much mental and physical fatigue prevents progress.</p>
+
+    <ul class="clean-list">
+      <li>Diet and sleep are non-negotiable foundations</li>
+      <li>Strength-focused exercises need 2–3 minutes rest between sets to reproduce intensity</li>
+      <li>If you can't perform your normal benchmarks, your body is telling you to rest</li>
+      <li>On system boards especially: when you lack sharpness, stop. Don't push through — it leads to injury</li>
+      <li>If training something specific to get stronger, always track it. If you're not tracking, do a regular session on regular boulders and focus on movement instead</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DAVE MACLEOD TIER LIST -->
+  <div class="section" id="tier-list">
+    <div class="section-header">
+      <div class="section-number">14</div>
+      <h3>Training Tool <em>Tier List</em> <span class="source-tag">SRC: Dave MacLeod</span></h3>
+    </div>
+
+    <p>Dave MacLeod — one of the world's most accomplished all-round climbers (8C boulder, 8b+ sport, E11 trad) — ranked common climbing training tools from S-tier to F-tier. His perspective is valuable because he's trained for decades and climbed to elite levels using minimal equipment.</p>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Key Context</div>
+      <p>MacLeod climbed to 8C (V15) / 14B <strong>without ever using a fingerboard</strong>. He only started fingerboarding in 2005 after years of pure outdoor bouldering. His point: no single tool is a "need" — they're all supplements to actual climbing.</p>
+    </div>
+
+    <h4>The Rankings</h4>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Tool</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color: var(--ember);">S+</strong></td>
+          <td><strong>Footwork & Technique</strong></td>
+          <td>Bumped fingerboarding off the top spot. Movement technique is led by footwork at every angle and rock type. Dictates how the rest of your body moves. More important than any strength tool.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--ember);">S</strong></td>
+          <td><strong>Hangboard</strong></td>
+          <td>Most convenient, simple, effective, accessible tool from first months through elite level. Doesn't wear skin out. Very safe (feet go down immediately if problems). But still not a "need."</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--moss);">B</strong></td>
+          <td><strong>4×4s / Power Endurance Circuits</strong></td>
+          <td>Effective for anaerobic endurance. Best approach depends on strengths: boulderers should do longer circuits, endurance climbers should do harder/shorter intervals. Compare against other circuit forms.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--moss);">B</strong></td>
+          <td><strong>Gymnastic Rings</strong></td>
+          <td>Excellent for stability and strength from core through shoulders and arms. A few simple exercises cover a huge amount. No other equipment needed. Hang from anything.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--slate);">C</strong></td>
+          <td><strong>Campus Board</strong></td>
+          <td>Trains plyometric power and rate of force development. But dangerous — MacLeod has injured himself multiple times. The "video game" fun factor tempts you to overdo it. No footwork involved.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--slate);">C-</strong></td>
+          <td><strong>Training Apps</strong></td>
+          <td>Only as good as their content. Can't adapt to your daily readiness. A real coach watching you climb — even once — is more valuable than any subscription. Useful if they help you complete training consistently.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">MacLeod on Training Apps</div>
+      <p>"Your ability to train is changing on a daily, if not hourly basis, and the training program is not necessarily reflecting that. I change my training on the hoof constantly. I warm up and think — actually, I'll just do this and stop. Or the opposite: I feel amazing, so I'm going to go for it." Off-the-shelf plans are just as likely to introduce error as useful content.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RINGS & BODYWEIGHT -->
+  <div class="section" id="rings">
+    <div class="section-header">
+      <div class="section-number">15</div>
+      <h3>Rings & <em>Bodyweight</em> Training <span class="source-tag">SRC: Dave MacLeod</span></h3>
+    </div>
+
+    <p>MacLeod doesn't tend to use a weights gym — instead he uses gymnastic rings for almost all supplementary strength work. "A few quite simple exercises on the rings will do so much." Rings need no other equipment and can hang from a tree, rafter, ceiling, or pull-up bar.</p>
+
+    <h4>MacLeod's Essential Ring Exercises</h4>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-strength">Foundation</div>
+        <div class="card-title">Muscle-Up</div>
+        <p>Full pulling-to-pushing transition. Builds explosive pulling power and pressing strength through a complete range of motion.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Mobility + Strength</div>
+        <div class="card-title">Skin the Cat</div>
+        <p>Full shoulder rotation under load. Builds shoulder flexibility and stability simultaneously — critical for overhead and behind-the-body positions in climbing.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Core + Pull</div>
+        <div class="card-title">Front Lever</div>
+        <p>Horizontal hold with straight body. Develops exceptional core-to-shoulder connection. Start with tuck position, progress to full.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Advanced Pull</div>
+        <div class="card-title">One-Arm Pull-Up</div>
+        <p>Ultimate pulling strength benchmark. Builds unilateral power directly applicable to climbing moves.</p>
+      </div>
+    </div>
+
+    <h4>Front Lever Progression</h4>
+    <ol class="numbered-list">
+      <li><strong>Hang + tuck knees up:</strong> Arms locked straight, pull trunk horizontal with legs fully tucked. Most reasonably fit people can do this.</li>
+      <li><strong>Rock lower trunk up and down:</strong> Build the motion if full tuck is too hard initially.</li>
+      <li><strong>Half lever (one knee bent):</strong> Significantly easier than full — good intermediate step.</li>
+      <li><strong>Open lever (spread legs):</strong> Full position but with legs spread wide. Can hold briefly.</li>
+      <li><strong>Full front lever:</strong> Straight body, legs together. Elite-level hold.</li>
+    </ol>
+
+    <div class="callout">
+      <div class="callout-title">Critical Warning</div>
+      <p>"Everyone always overreaches what they can do on rings. They just try a proper full front lever when they're nowhere near strong enough." — Dave MacLeod. Always start from where you are and build up. The rings amplify both gains and injury risk.</p>
+    </div>
+
+    <h5>Risk / Reward</h5>
+    <div class="meter-row">
+      <span class="meter-label">Risk</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot filled-risk"></div>
+        <div class="meter-dot"></div>
+        <div class="meter-dot"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">2/5 — Safe if you respect progressions</span>
+    </div>
+    <div class="meter-row">
+      <span class="meter-label">Reward</span>
+      <div class="meter-dots">
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot filled-reward"></div>
+        <div class="meter-dot"></div>
+      </div>
+      <span class="meter-value">4/5 — Covers huge range with minimal equipment</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FOOTWORK MASTERY -->
+  <div class="section" id="footwork-deep">
+    <div class="section-header">
+      <div class="section-number">16</div>
+      <h3>Footwork <em>Mastery</em> <span class="source-tag">SRC: Dave MacLeod</span></h3>
+    </div>
+
+    <p>MacLeod elevated footwork above the hangboard as the single most important training tool for climbers. "Movement technique in climbing is very much led by footwork. No matter the angle, no matter the rock type — footwork is number one."</p>
+
+    <h4>How to Actually Train Footwork</h4>
+
+    <p>The core of learning technique is <strong>experimentation</strong>. Every move you do is an experiment:</p>
+
+    <ol class="numbered-list">
+      <li><strong>Do a move.</strong> Judge how you positioned your body to get from one hold to the next.</li>
+      <li><strong>Get feedback.</strong> Did it work? But deeper: <em>how easy did it feel?</em></li>
+      <li><strong>Ask: "Is there an easier way?"</strong> Always test alternatives.</li>
+      <li><strong>If something felt easier, figure out why.</strong> Did you hook the toe in more forcefully? Turn the knee in slightly? Apply more or less pressure?</li>
+      <li><strong>Repeat across scenarios.</strong> Different angles, rock types, hold shapes.</li>
+    </ol>
+
+    <div class="callout-green callout">
+      <div class="callout-title">The #1 Rule: Don't Be Passive</div>
+      <p>"Don't just think 'I sent that move, great, forget about it.' Always ask: why did that work? Why did that attempt feel easier or harder than the previous one?" Every move is data. Use it.</p>
+    </div>
+
+    <h4>Why Bouldering Is the Best Technique Trainer</h4>
+    <ul class="clean-list">
+      <li>Accessible series of moves you can try again and again</li>
+      <li>Even if you succeed, you can repeat and try to make it feel easier</li>
+      <li>Short enough to maintain focus and intention on each move</li>
+      <li>Immediate feedback loop — experiment, adjust, test again</li>
+    </ul>
+
+    <h4>Footwork Covers All Angles</h4>
+    <p>Slab climbing is a great way to <em>start</em> learning footwork, but it's not enough. Footwork matters on every wall angle — vertical, overhang, roof. Train on as many different features and angles as possible. MacLeod notes that even after 20-30 years of climbing, "you'll still learn new ways to use your feet all the time."</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RAMPING & PROGRESSION -->
+  <div class="section" id="ramping">
+    <div class="section-header">
+      <div class="section-number">17</div>
+      <h3>Ramping & <em>Progression</em> <span class="source-tag">SRC: Dave MacLeod</span></h3>
+    </div>
+
+    <p>MacLeod calls ramping "one of the most important words that anyone can learn in the whole world of training." It means a <strong>gradual progression of load</strong> — not jumping to full intensity.</p>
+
+    <div class="callout">
+      <div class="callout-title">The Campus Board Cautionary Tale</div>
+      <p>Getting on the campus board in your first month of climbing, hanging with shoulders pressed against ears, no scapular engagement — that's how you destroy your back. The advice to "climb for at least a year" before campusing isn't about gatekeeping — it's about not injuring yourself. Take the ramp-up seriously.</p>
+    </div>
+
+    <h4>How to Apply Ramping</h4>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-technique">Principle</div>
+        <div class="card-title">Mix Up Methods</div>
+        <p>"There's something about mixing up training methods — it's useful to pick from a variety of different strength training methods, and that will give you a well-rounded strength." Don't rely on one tool exclusively.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Principle</div>
+        <div class="card-title">Adjust on the Fly</div>
+        <p>"I warm up and think — that session two days ago was actually quite hard. I was going to do X, Y, and Z, but now I'll just do X and Y and stop." Other times, you feel amazing and go for it. Listen to your body daily.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Principle</div>
+        <div class="card-title">Respond to Response</div>
+        <p>If you're responding to a training stimulus, keep doing more. When you hit a point where you're not responding anymore, shift focus and do something slightly different. Training is a conversation, not a script.</p>
+      </div>
+    </div>
+
+    <h4>4×4s and Power Endurance</h4>
+    <p>4×4s (doing a boulder problem 4 times with 30-second rest between, then switching to a new problem) are a common power endurance protocol. MacLeod rates them B-tier — effective, but need to be compared against other circuit forms.</p>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Choosing Your Circuit Style</div>
+      <p><strong>If you're an endurance climber:</strong> Do shorter, harder intervals (more like 4×4s with harder problems) to address your weakness.<br>
+      <strong>If you're a boulderer:</strong> Do longer continuous circuits to build stamina you lack.<br>
+      Adjust as you go — when you stop responding, switch approaches.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HIP & HIGH FEET MOBILITY -->
+  <div class="section" id="hip-mobility">
+    <div class="section-header">
+      <div class="section-number">18</div>
+      <h3>Hip & High Feet <em>Mobility</em> <span class="source-tag">SRC: Hooper's Beta</span></h3>
+    </div>
+
+    <p>Foot technique and lower extremity mobility can make or break your ability to send. Improving hip flexion and abduction lets you get feet higher while keeping hips closer to the wall — reducing reliance on upper body strength. This is one of the most underrated skills in climbing.</p>
+
+    <h4>3-Part System</h4>
+    <p>The approach follows a clear progression: <strong>Stretching</strong> (build passive range) → <strong>Active Range of Motion</strong> (own that range with muscle control) → <strong>On-The-Wall Application</strong> (apply it to climbing movement).</p>
+
+    <h4>Three Key Stretches</h4>
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Stretch</th>
+          <th>Setup</th>
+          <th>Hold</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Child's Pose</strong></td>
+          <td>Hands and knees, knees hip distance apart, sit butt to heels, chest to ground. Add side-to-side stretch.</td>
+          <td>30–45 sec per position</td>
+          <td>Least aggressive. If pinching in front of hip, may need PT evaluation.</td>
+        </tr>
+        <tr>
+          <td><strong>Garland's Pose (Deep Squat)</strong></td>
+          <td>Stand hip distance, feet slightly externally rotated, squat deep, elbows inside thighs, palms together, push knees out.</td>
+          <td>30–45 sec</td>
+          <td>Modification if falling back: use support behind you. Advanced: try narrower/wider stances.</td>
+        </tr>
+        <tr>
+          <td><strong>Frogger Stretch</strong></td>
+          <td>Quadruped, slide knees out, feet turned out, inside of feet on ground, drop to elbows, sink hips back over knees.</td>
+          <td>60 sec, 2–3 reps</td>
+          <td>Most intense. Modification: from hands, drive groin toward ground instead of sinking back.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Active Range of Motion Drills</h4>
+    <ul class="clean-list">
+      <li><strong>Wall Foot Hikes:</strong> Stand facing wall, feet touching the base. Hike one foot up as high as possible without leaning trunk. 8–10 reps, 1 sec hold each side.</li>
+      <li><strong>End Range Activation:</strong> Pull leg high with hand, then activate muscles to hold position. Release hand. Fight to maintain for up to 10 sec, then slowly lower over 5 sec. 3–5 reps per side.</li>
+    </ul>
+
+    <h4>On-Wall Application</h4>
+    <p>Vertical wall, skip footholds, hike foot as high as possible. Push up with single foot and opposite arm. Slow and controlled — this is where the stretch and active work pay off in real climbing movement.</p>
+
+    <div class="callout">
+      <div class="callout-title">Frequency</div>
+      <p><strong>Stretches:</strong> Multiple times daily. <strong>Active/end range drills:</strong> Every other day (3×/week). <strong>On-wall strengthening:</strong> 1–3×/week. Even stretches alone done consistently + the full routine just 1×/week = noticeable gains.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OVERUSE & LOAD MANAGEMENT -->
+  <div class="section" id="injury-overview">
+    <div class="section-header">
+      <div class="section-number">19</div>
+      <h3>Overuse & <em>Load Management</em> <span class="source-tag">SRC: Lattice / Climbing Doctor</span></h3>
+    </div>
+
+    <p>"The best way to get better at climbing is to not get injured." 93–94% of climbing injuries are overuse injuries — not acute traumatic events. Understanding load management is the single most important skill for long-term progression.</p>
+
+    <h4>The Load-Capacity Mismatch</h4>
+    <p>Injuries happen when training load exceeds tissue capacity. Two common scenarios: ramping up training too fast, or returning from time off too quickly. Both create a gap between what your tissues can handle and what you're asking them to do.</p>
+
+    <h4>Top Risk Factors</h4>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-finger">Risk 1</div>
+        <div class="card-title">Too Much Too Soon</div>
+        <p>Fingers adapt slowly. Adding hangboarding, new modalities, or extra sessions too quickly overwhelms tissue capacity before it can catch up.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Risk 2</div>
+        <div class="card-title">No Off-Season</div>
+        <p>Constantly on the push, always trying to perform. Peaks and troughs with no planned deload. Your body needs periodic rest to consolidate gains.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Risk 3</div>
+        <div class="card-title">Volume on Top of Intensity</div>
+        <p>Feeling strong → try projects → go back tomorrow → stacking volume on intensity = recipe for disaster. Pick one per session.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Risk 4</div>
+        <div class="card-title">Pre-Trip Panic</div>
+        <p>Training too hard in the last 2–3 weeks before a trip. That work should have been done already. Take your foot off the gas and arrive fresh.</p>
+      </div>
+    </div>
+
+    <h4>Two Key Prevention Strategies</h4>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-strength">Strategy 1</div>
+        <div class="card-title">Strength & Conditioning</div>
+        <p>Off-wall training with controllable variables (velocity, intensity, volume, sets). Builds tissue tolerance. Strength is protective — it's not about chasing PBs, it's about building capacity so your tissues can handle more load.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Strategy 2</div>
+        <div class="card-title">Load Management</div>
+        <p>Track training load (volume × intensity). Watch the acute-to-chronic workload ratio. Avoid spikes. First week of a new block should be just a step above current baseline. Build in deload weeks.</p>
+      </div>
+    </div>
+
+    <div class="callout-green callout">
+      <div class="callout-title">The Basics Foundation</div>
+      <p>Hydration, nutrition, sleep, active recovery, stress management. Nail these and your training is more effective + injury risk drops. Miss them and even good programming won't protect you.</p>
+    </div>
+
+    <h4>Auto-Regulation</h4>
+    <p>Adjust sessions based on how you feel. Have Plan A, B, and C ready. Key skill: <strong>interoception</strong> — sensing what your body is telling you. If not feeling great, cut the session in half rather than lowering intensity (which often just increases volume and makes things worse).</p>
+
+    <div class="callout">
+      <div class="callout-title">Allostatic Load</div>
+      <p>Life stress matters. Moving house, new job, first kid — all add to your total stress burden. Recovery happens at home and at work, not just at the gym. If life is stressful, you're sub-optimally recovered before you even start training.</p>
+    </div>
+
+    <p><strong>Nutrition note:</strong> When ramping up training, ramp up nutrient intake too. People forget this — increased training load with the same diet = increased fatigue + insufficient recovery.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINGER INJURY PROTOCOL -->
+  <div class="section" id="finger-injuries">
+    <div class="section-header">
+      <div class="section-number">20</div>
+      <h3>Finger Injury <em>Protocol</em> <span class="source-tag">SRC: Climbing Doctor / Lattice</span></h3>
+    </div>
+
+    <h4>The Only Proven Prevention</h4>
+    <p>According to a literature review (Miru et al.), the <strong>only</strong> thing proven to help prevent pulley injuries is <strong>warming up effectively and progressively loading fingers</strong>. Not taping, not strength exercises, not mobility work. 50–60 moves per hand of progressively increasing load until bow-stringing reaches maximum.</p>
+
+    <p><strong>Warmup methods:</strong> Easy climbing, isometric curls on a force board, feet-on-ground no-hangs progressively removing weight. "The best warmup program is the one you consistently do."</p>
+
+    <h4>When You Pop</h4>
+    <p>If you hear a pop — likely a pulley tear. The most important first step: <strong>figure out the grade of injury</strong>.</p>
+    <ul class="clean-list">
+      <li><strong>Gold standard:</strong> Diagnostic ultrasound — measures bow-stringing distance precisely</li>
+      <li><strong>Self-assessment:</strong> Cooper et al. clinical criteria — test crimp grip, sloper grip, ROM, check boxes, add up score → mild, moderate, or severe</li>
+    </ul>
+
+    <h4>Grade 2 (Moderate) Recovery Timeline</h4>
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Timeline</th>
+          <th>What You Can Do</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>No-pain hang</td>
+          <td>2–4 weeks</td>
+          <td>Fingerboard with zero pain</td>
+        </tr>
+        <tr>
+          <td>Easy climbing</td>
+          <td>~4 weeks</td>
+          <td>Back on wall, easy terrain only</td>
+        </tr>
+        <tr>
+          <td>Low-pain hang</td>
+          <td>6–9 weeks</td>
+          <td>Some symptoms OK, tissue is remodeling</td>
+        </tr>
+        <tr>
+          <td>Hard climbing</td>
+          <td>9–12 weeks</td>
+          <td>Full return to climbing</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">Acute vs. Gradual Onset</div>
+      <p><strong>Acute (sharp pain during a move):</strong> Stop immediately. Note what you were doing. Deload and let inflammation calm (about a week). Then assess.<br>
+      <strong>Gradual (comes on over days/weeks):</strong> Review last 2–4 weeks of training. Modify load — switch to open hand / 3-finger drag (less stressful than full crimp).</p>
+    </div>
+
+    <h4>What NOT To Do</h4>
+    <ul class="clean-list">
+      <li>Don't ignore it and keep climbing</li>
+      <li>Don't just rest forever and wait (rest → climb → hurt → rest cycle)</li>
+      <li>Don't listen to gym buddy diagnosis</li>
+      <li>Don't guess — get certainty from a qualified climbing physio</li>
+    </ul>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Eccentrics Myth</div>
+      <p>Eccentrics DON'T cure elbow tendinopathy despite popular belief. The common flexor tendon deals with isometric loading — not elastic energy like the Achilles. Work the tendon both eccentrically AND concentrically. Find the correct load first.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REHAB MINDSET -->
+  <div class="section" id="rehab-mindset">
+    <div class="section-header">
+      <div class="section-number">21</div>
+      <h3>Rehab <em>Mindset</em> <span class="source-tag">SRC: Lattice Training</span></h3>
+    </div>
+
+    <p><strong>"For almost all climbing injuries, the climber will get back to and progress beyond their pre-injury level."</strong> This is the most important thing to remember when injured.</p>
+
+    <h4>Rehab = Training + Injury</h4>
+    <p>Rehab isn't a separate thing. Phil Glasgow (GB Olympic team physio): "Rehab is just training in the presence of injury." You're still training — you're just working around a constraint.</p>
+
+    <h4>Reframe Injury as Opportunity</h4>
+    <ul class="clean-list">
+      <li><strong>Finger injury?</strong> → Work mobility, overall S&C, technique on easy terrain</li>
+      <li><strong>Elbow injury?</strong> → Work technique on easy ground, core, flexibility</li>
+      <li>Climbing is multifaceted — even injured, you can work flexibility, core, leg strength, and technique drills that don't stress the injured area</li>
+      <li>Most successful climbers turn misfortune into opportunity and come back stronger</li>
+    </ul>
+
+    <h4>Progressive Loading in Rehab</h4>
+    <p>Don't just use therabands forever. Start light when sore, then progressively overload — just like training. Therabanding alone = neuromodulation (feels better temporarily, doesn't actually build tissue tolerance).</p>
+
+    <p><strong>Patience & Consistency</strong> — The most common advice from all 4 physios consulted. Things take time. Setbacks are part of the process. Stay the course.</p>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Silver Lining</div>
+      <p>Forced rest can reinvigorate psyche. Removes ego from climbing. You go back to climbing for climbing — not for numbers. Many climbers come back stronger because they actually rested and trained their weaknesses for the first time.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FINGER CURL PROTOCOL -->
+  <div class="section" id="finger-curls">
+    <div class="section-header">
+      <div class="section-number">22</div>
+      <h3>Finger Curl <em>Protocol</em> <span class="source-tag">SRC: Power Company</span></h3>
+    </div>
+
+    <p><strong>The Protocol:</strong> 3 sets × 3 reps × 2 grip positions, targeting 80% of 1RM. Twice a week. That's it.</p>
+
+    <h4>Setup</h4>
+    <p>Portable hangboard (like The Nug) + digital force gauge (Tyndec, Bluetooths to phone) + 45lb plate as anchor. Alternatives: plywood with eye bolt + chain, or a sling around your foot.</p>
+
+    <h4>Grip Positions</h4>
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Grip</th>
+          <th>Edge Size</th>
+          <th>Target Load</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Half Crimp</td>
+          <td>25mm</td>
+          <td>80% of 1RM (e.g., ~95 lbs)</td>
+        </tr>
+        <tr>
+          <td>Full Crimp</td>
+          <td>13mm</td>
+          <td>80% of 1RM (e.g., ~75 lbs)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Warm-Up Set</h4>
+    <p>Before jumping in — 1 set of 3 progressive reps: ~50% → ~70% → 80%. Confirms you're ready and tissues are warm.</p>
+
+    <div class="callout">
+      <div class="callout-title">Form</div>
+      <p>Isolate finger flexors. Stand almost straight. <strong>DON'T</strong> pull with shoulder, stand on tiptoes, or use feet to generate force. Just curl fingers down into the edge — pulling yourself into the ground with finger flexors only.</p>
+    </div>
+
+    <h4>Rest & Follow-Up</h4>
+    <p><strong>Rest:</strong> 2–3 minutes between sets, 2–3 minutes between grip positions.</p>
+    <p><strong>After the protocol:</strong> Jump on the wall and climb, or do crimp crawls — slow controlled laps on small crimps with good footholds.</p>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Key Insight</div>
+      <p>"You could literally take this workout — three sets of three, two grips — do it twice a week and repeat it over and over. Keep it that simple. You'll get great benefit."</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MENTAL GAME -->
+  <div class="section" id="mental-game">
+    <div class="section-header">
+      <div class="section-number">23</div>
+      <h3>Mental <em>Game</em> <span class="source-tag">SRC: EpicTV / Louis Parkinson</span></h3>
+    </div>
+
+    <p>Three principles from Louis Parkinson that can immediately improve your climbing performance:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-technique">Principle 1</div>
+        <div class="card-title">Don't Hesitate</div>
+        <p>If you know what to do, go for it. Hanging around on holds psyching yourself out = wasting energy. Going quickly and committing to the move = rewarded for confidence. Hesitation drains both energy and belief.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Principle 2</div>
+        <div class="card-title">Ban the Word "Can't"</div>
+        <p>There are things you can't do <em>yet</em>. Nothing is impossible with consistent effort. Staying positive and trying again and again builds the strength you need. Language shapes belief — and belief shapes performance.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Principle 3</div>
+        <div class="card-title">Commit with Confidence</div>
+        <p>Doubt kills sends. Even if feet don't feel right, if you commit confidently your body is ready to pull hard. Louis describes hitting the wrong part of a hold but holding it because he was thinking confidently. Conversely, hitting a hold perfectly but falling because he was doubting.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">The Confidence Paradox</div>
+      <p>Confidence makes you hit holds better, <strong>AND</strong> makes you hold on when you don't hit them perfectly. Doubt makes you fall even when the move is well within your ability. Confidence prepares the body to perform.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROTOCOL REFERENCE -->
+  <div class="section" id="protocols">
+    <div class="section-header">
+      <div class="section-number">24</div>
+      <h3>Protocol <em>Quick Reference</em></h3>
+    </div>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Exercise</th>
+          <th>Sets</th>
+          <th>Reps / Duration</th>
+          <th>Rest</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Max Hangs</td>
+          <td>3–5</td>
+          <td>5s hang</td>
+          <td>2–3 min</td>
+          <td>Pre-session, near max load</td>
+        </tr>
+        <tr>
+          <td>Repeaters</td>
+          <td>3–6</td>
+          <td>7s on / 3s off × 6</td>
+          <td>2 min</td>
+          <td>Lower load, higher volume</td>
+        </tr>
+        <tr>
+          <td>Hammer Curls</td>
+          <td>3–4</td>
+          <td>5–12 reps</td>
+          <td>2 min</td>
+          <td>Neutral grip, brachialis focus</td>
+        </tr>
+        <tr>
+          <td>Archer Pull-Ups</td>
+          <td>3–4</td>
+          <td>8 total (4/side)</td>
+          <td>2–3 min</td>
+          <td>Add weight belt when comfortable</td>
+        </tr>
+        <tr>
+          <td>One-Arm Lock-Off</td>
+          <td>4 per angle</td>
+          <td>5–10s hold</td>
+          <td>2–3 min</td>
+          <td>90° and 120° angles</td>
+        </tr>
+        <tr>
+          <td>Campus Latches</td>
+          <td>3–5</td>
+          <td>4–6 latches</td>
+          <td>2–3 min</td>
+          <td>Both arms or single arm</td>
+        </tr>
+        <tr>
+          <td>Negative Pull-Ups</td>
+          <td>3</td>
+          <td>5 reps</td>
+          <td>2 min</td>
+          <td>Leave 1–2 reps in tank</td>
+        </tr>
+        <tr>
+          <td>Grip Memorization</td>
+          <td>1</td>
+          <td>5s on/5s off × 5 per grip</td>
+          <td>—</td>
+          <td>Feet on ground always</td>
+        </tr>
+        <tr>
+          <td>Tuck Front Lever</td>
+          <td>3–5</td>
+          <td>5–15s hold</td>
+          <td>2–3 min</td>
+          <td>Rings or bar, arms locked straight</td>
+        </tr>
+        <tr>
+          <td>Skin the Cat</td>
+          <td>3</td>
+          <td>3–5 reps</td>
+          <td>2 min</td>
+          <td>Rings, slow and controlled rotation</td>
+        </tr>
+        <tr>
+          <td>4×4 Circuit</td>
+          <td>4 problems</td>
+          <td>4 reps each, 30s rest</td>
+          <td>3 min between problems</td>
+          <td>Power endurance, moderate grade</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <div class="section" id="faq">
+    <div class="section-header">
+      <div class="section-number">25</div>
+      <h3>Frequently Asked <em>Questions</em></h3>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Should beginners train finger strength?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">No. At beginner levels, finger strength training will most likely lead to injury. You will get the same strength gains from just climbing regular boulders. Instead, learn the grip positions (half crimp, open hand, sloper) on a hangboard with your feet on the ground — memorize the shapes, don't load the tendons.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What's more important — hangboarding or board climbing?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">It depends on what you need. Hangboarding is structured, safe, and trackable — great for tendon conditioning and understanding your baseline. Board climbing is sport-specific and builds body tension alongside finger strength. If you can only pick one, board climbing gives more comprehensive gains, but carries higher injury risk. Many experienced climbers do both: hangboarding for structured tendon work, board climbing for sport-specific application.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What's "contact strength" and why does it matter?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Contact strength is your ability to engage your fingers as rapidly as possible when catching a hold. In modern climbing, moves are rarely completely static — you're constantly landing on holds dynamically. Hangboarding trains static holding but not this rapid engagement. Campus boarding (especially latches) is the best tool for developing contact strength.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">How many days per week should I train?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Beginners (V0–V5): 2 days/week is sufficient. Intermediates: 3–4 days with some days being pure climbing and others incorporating specific training. Research shows you can even pack all strength training into one day per week if needed — especially for newer lifters. What matters more than frequency is quality of each session and recovery between them.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Should I do strength training before or after climbing?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Climbing and skill-based work comes first and takes priority. Do strength exercises after climbing, or ideally on a separate day to maintain quality and high intensity. The exception is max hangs and fingerboarding — these can go into your warm-up (3 sets of 3 at 5RM) since they recruit your fingers without exhausting them and actually reduce the warm-up routes you need.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">I can't do pull-ups yet. What should I do?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Negative pull-ups. Jump to the top of the bar and slowly lower yourself — 3 sets of 5 reps with 2 minutes rest between sets. Leave 1–2 reps in the tank on each set. Use a stool or box if you can't jump to the top. This is even more productive than regular pull-ups for building the necessary strength. Do these after climbing.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Why do intermediate climbers plateau at V4–V6?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">The most common culprits: well-developed preferences but underdeveloped anti-styles. Static climbers avoid dynamic movement. Dynamic climbers lack body tension. Specifically: gaps in full-body tension chain (not using posterior chain), inability to generate momentum without locking off, hitting holds with limp shoulders, and not practicing mistake correction systematically.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Is a one-arm pull-up necessary for hard climbing?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">No. Many very good climbers can't do one. But the journey to achieving one builds an excellent foundation of pulling strength. Being strong in a unilateral position is useful in climbing where you're often pulling primarily with one arm. Think of it as a benchmark, not a requirement.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">How do I know if I need more muscle vs. stronger tendons?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">If you need more muscle, movements like finger curls (which involve a range of motion) will be more effective than hangboarding. If you need stronger tendons, hangboarding's isometric approach is ideal. A simple test: if you can hold a position but not pull through it dynamically, you likely need more muscle. If you can't even sustain a static hold, tendon conditioning is the priority.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What's the #1 thing to improve as a beginner?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Movement quality. Too much strength can actually damage your climbing skill since it lets you move incorrectly. The "Mistake Practice" drill is the highest-impact exercise: climb a flash-level boulder, identify one thing to improve, rest, execute on just that one thing, repeat. This is what separates elite climbers from everyone else — obsessive correction of small errors.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Are gymnastic rings worth it for climbers?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Yes — Dave MacLeod uses them instead of a weights gym for nearly all supplementary strength work. Key exercises: muscle-up, skin the cat, front lever, one-arm pull-ups. They build stability and strength from core through shoulders and arms. The advantage: no other equipment needed. Hang them from a tree, rafter, or doorframe. Start with tuck front lever — most reasonably fit people can do it. Don't overreach to full front lever before you're ready.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Do I need a fingerboard to climb hard?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">No. Dave MacLeod climbed to 8C/V15 without using a fingerboard — just outdoor bouldering and some 45-degree board climbing. Chris Sharma reached elite levels without one either. That said, MacLeod still rates hangboards S-tier: they're the most convenient, safe, and accessible training tool. The point is they're excellent but not mandatory. If you already climb a lot, you can develop elite finger strength through climbing alone.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Are training apps worth paying for?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">MacLeod rates them C-tier. If an app helps you complete your training and shift habits, it's useful. But the content is only as good as the program it gives you — and off-the-shelf plans can't adjust to your daily readiness. "Your ability to train changes on a daily, if not hourly basis." An experienced coach watching you climb even once is more valuable than any subscription. The apps are just as likely to introduce error as useful content.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What are 4×4s and should I do them?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">4×4s are power endurance circuits: do a boulder 4 times with 30-second rest between each go, then take 3 minutes rest and move to a different boulder. MacLeod rates them B-tier — effective but need to be compared against other circuit forms. Tailor your approach: if you're a boulderer, do longer continuous circuits for stamina. If you're an endurance climber, do shorter harder intervals (more like classic 4×4s) to target your weakness.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">How should I warm up my fingers before climbing?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Progressive loading: 50–60 moves per hand gradually increasing intensity. Start with a cardiovascular warmup, then mobility work, then slow finger loading on easy terrain or a hangboard. The key is progressive — don't jump straight to hard crimps. The best warmup is the one you consistently do. Whether it's easy climbing, isometric curls on a force board, or feet-on-ground no-hangs progressively removing weight, consistency matters more than the specific method.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What should I do if I feel a pop in my finger?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Stop climbing immediately. Note what you were doing (grip type, hold, intensity). Rest 5–7 days to let initial inflammation calm. Don't poke, prod, or test during this time. Then either self-assess using the Cooper et al. clinical criteria or — better — see a climbing-specific physio for ultrasound diagnosis. Don't guess and don't listen to gym buddy diagnosis. Get certainty from a qualified professional so you know exactly what you're dealing with and can follow the right recovery timeline.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">How do I know if I should stop climbing or push through?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Auto-regulate: if pain is mild and decreasing during the session, it's generally okay to continue at reduced intensity. If pain increases or is sharp, stop. The key question to ask: "How does it react to load?" That's your best indicator. When in doubt, cut the session short rather than push through. It's better to lose one session than to lose three months to an injury that could have been avoided.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Is taping my fingers useful for injury prevention?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">According to the research literature review by Miru et al., taping has NOT been proven to prevent pulley injuries. The only proven prevention method is progressive warmup loading (50–60 moves per hand of increasing intensity). Taping may help support an already injured finger during rehab, but it is not a preventive measure. Don't rely on tape as a substitute for proper warmup and load management.</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SOURCES -->
+  <div class="section" id="sources">
+    <div class="section-header">
+      <div class="section-number">26</div>
+      <h3>Sources</h3>
+    </div>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Video</th>
+          <th>Duration</th>
+          <th>Key Topics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>How to One Arm Pull-Up | Pulling Strength for Climbing</td>
+          <td>5:10</td>
+          <td>Hammer curls, archer pull-ups, one-arm lock-offs</td>
+        </tr>
+        <tr>
+          <td>How Climbers Get STRONG Fingers (3 Methods)</td>
+          <td>20:48</td>
+          <td>Hangboard, system board, campus board analysis</td>
+        </tr>
+        <tr>
+          <td>INTERMEDIATE Climbing Drills That Got Me Past V8</td>
+          <td>9:27</td>
+          <td>Body tension, dynamic movement, hip control</td>
+        </tr>
+        <tr>
+          <td>How to Maximize Your First Year of Climbing</td>
+          <td>20:49</td>
+          <td>Beginner drills, grip types, mistake practice</td>
+        </tr>
+        <tr>
+          <td>10 Science-Based Ways to Get Stronger in Half the Time</td>
+          <td>11:11</td>
+          <td>Training efficiency, periodization, recovery</td>
+        </tr>
+        <tr>
+          <td>The Best (and Worst) Training Tools Ranked by Dave MacLeod</td>
+          <td>28:57</td>
+          <td>Tool tier list, footwork, rings, 4×4s, ramping, training apps</td>
+        </tr>
+        <tr>
+          <td>The Most UNDERRATED Climbing Skill — Hooper's Beta</td>
+          <td>—</td>
+          <td>Mobility, high feet</td>
+        </tr>
+        <tr>
+          <td>How to Avoid Climbing Injuries with Expert Physiotherapy Advice — Lattice Training</td>
+          <td>—</td>
+          <td>Injury prevention</td>
+        </tr>
+        <tr>
+          <td>How To Avoid Injuries In Climbing - 2 Key Steps — Lattice Training</td>
+          <td>—</td>
+          <td>Load management</td>
+        </tr>
+        <tr>
+          <td>Climbing Doctor on Proven Way To Avoid Finger Injuries — Jared Vagy / Power Company</td>
+          <td>—</td>
+          <td>Finger injury prevention</td>
+        </tr>
+        <tr>
+          <td>My Finger Training Routine After 250+ Podcast Interviews — Kris Hampton / Power Company</td>
+          <td>—</td>
+          <td>Finger curls protocol</td>
+        </tr>
+        <tr>
+          <td>3 Simple Tricks To Improve Your Mental Game — EpicTV / Louis Parkinson</td>
+          <td>—</td>
+          <td>Mental game</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 16px; font-size: 13px; color: var(--slate);">Total source material: ~165 minutes, ~58,500 words across 12 expert videos + Unstuck book. Compiled March 2026.</p>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- CALISTHENICS — UNSTUCK CONTENT                 -->
+  <!-- ============================================== -->
+
+  <div style="margin: 64px 0; padding: 48px 0; border-top: 2px solid var(--ember); border-bottom: 1px solid rgba(45, 42, 36, 0.1); text-align: center;">
+    <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ember); font-weight: 500; margin-bottom: 8px;">Part II</div>
+    <h2 style="font-family: var(--font-display); font-size: 32px; color: var(--ink); font-weight: 400; margin-bottom: 8px;">Calisthenics — Unstuck</h2>
+    <p style="color: var(--slate); font-size: 14px; max-width: 480px; margin: 0 auto;">Based on "Unstuck: The .5 Progression Path" by Eduardo Orihuela (Prismatic Strength). A complete framework for bodyweight strength training.</p>
+  </div>
+
+  <!-- SECTION 27: STRENGTH FIRST PHILOSOPHY -->
+  <div class="section" id="cal-philosophy">
+    <div class="section-header">
+      <div class="section-number">27</div>
+      <h3>Strength First <em>Philosophy</em></h3>
+    </div>
+
+    <h4>The Plateau Problem</h4>
+    <p>Most people get stuck because their body adapts faster than their plan evolves. They train harder and longer, but without progression logic they just get burnout. In weighted training, you add weight. In calisthenics, "weight" = leverage, range, control — and most people don't know how to modify those.</p>
+
+    <div class="callout">
+      <div class="callout-title">Why You Feel Stuck</div>
+      <p>Your body adapts, but your plan stays the same. The real cost of doing more: overtraining is the most common trap. People think they're missing intensity when they're actually missing progression logic.</p>
+    </div>
+
+    <h4>Strength First</h4>
+    <p><strong>Build the foundation before the form, the control before the complexity, the capability before the display.</strong> Inspired by StrongFirst. This is the guiding principle of the entire Unstuck system.</p>
+
+    <div class="callout-green callout">
+      <div class="callout-title">The Simplicity Equation</div>
+      <p>Strength + Mobility + Control = Capability. Strength allows you to express control. Mobility gives you access to full range. Control is what transfers strength into skills.</p>
+    </div>
+
+    <h4>Progressive Overload Without Weights</h4>
+    <p>In calisthenics, you have five levers to increase difficulty:</p>
+    <ol class="numbered-list">
+      <li><strong>Leverage</strong> — Move your center of mass further from the base of support. Example: leaning forward in a push-up dramatically increases shoulder demand.</li>
+      <li><strong>Range of Motion</strong> — Work through greater depth. Deeper push-ups stretch the chest and shoulders under load.</li>
+      <li><strong>Tempo</strong> — Slow down reps, pause mid-rep. A 3-second eccentric increases time under tension without adding weight.</li>
+      <li><strong>Stability</strong> — Reduce points of contact. Going from two arms to one forces the nervous system to work harder.</li>
+      <li><strong>Volume</strong> — Increase total work (sets x reps) — but only after control is consistent.</li>
+    </ol>
+
+    <div class="callout">
+      <div class="callout-title">Key Insight</div>
+      <p>Simplicity beats complexity. When your routine is built around a small number of movements, progress becomes measurable. Simple structure leads to consistency, and consistency leads to guaranteed progress.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 22: THE 5Ps FRAMEWORK -->
+  <div class="section" id="cal-5ps">
+    <div class="section-header">
+      <div class="section-number">28</div>
+      <h3>The <em>5Ps</em> Framework</h3>
+    </div>
+
+    <p>The 5Ps (from GMB Fitness) structure every training session. They balance discipline and flexibility — systematic without being rigid. Process over outcome.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-technique">Phase 1</div>
+        <div class="card-title">Prep (5-10 min)</div>
+        <p>More than a warm-up. Connect body and mind. Take inventory: what's tight, sore, unstable? Prepare joints, muscles, and movement patterns for the main skill. Think of it as tuning an instrument before you play.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-technique">Phase 2</div>
+        <div class="card-title">Practice (5-10 min)</div>
+        <p>Refine the skill. Task-specific coordination at sub-maximal effort. Focus on position, coordination, timing. Movements where you have the strength but need balance and coordination. Don't rush — mastery lives here.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Phase 3</div>
+        <div class="card-title">Push (15-30 min)</div>
+        <p>The effort phase. Apply progressive overload. Know exactly what variable you're progressing and why. Sweet spot: enough stimulus to trigger adaptation, enough control to maintain form. <strong>This is where the .5 Progression Path lives.</strong></p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-beginner">Phase 4</div>
+        <div class="card-title">Play (5-10 min)</div>
+        <p>Keep it exciting and sustainable. Test skills, try transitions, find your rhythm. Mix moves together (like dip + pull-up for a muscle-up). Use lighter/deload sessions. Curiosity in motion.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-finger">Phase 5</div>
+        <div class="card-title">Ponder</div>
+        <p>Reflect and refine. Review your session: what felt strong? What broke under fatigue? Write notes, review videos, rate performance 1-10. This phase transforms good training into great training.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 23: THE .5 PROGRESSION PATH -->
+  <div class="section" id="cal-progression">
+    <div class="section-header">
+      <div class="section-number">29</div>
+      <h3>The .5 <em>Progression Path</em></h3>
+    </div>
+
+    <p>Progress stalls when steps are too far apart. Most tutorials show Step 1 and Step 2 with nothing in between. That gap is where people plateau. The .5 Progression Path fills it.</p>
+
+    <h4>The 5 Stages</h4>
+    <p>Every movement breaks into five stages of mastery. Here's what each stage means, with the push-up as an example:</p>
+
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Name</th>
+          <th>What It Means</th>
+          <th>Push-Up Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Step 1</td>
+          <td><strong>Clean Reps</strong></td>
+          <td>Foundation. Build volume, refine form, develop confidence through clean full-range movement.</td>
+          <td>Knee push-ups with steady tempo and full depth</td>
+        </tr>
+        <tr>
+          <td>Step 2</td>
+          <td><strong>Negatives</strong></td>
+          <td>We're stronger during eccentric (lowering). Build strength and control in the downward phase.</td>
+          <td>Start in plank, slowly lower to bottom of push-up</td>
+        </tr>
+        <tr>
+          <td>Step 3</td>
+          <td><strong>Negatives Plus</strong></td>
+          <td>Combine phases — complete full rep at difficulty matching current ability.</td>
+          <td>Lower into push-up with control, come up with knee push-up</td>
+        </tr>
+        <tr>
+          <td>Step 4</td>
+          <td><strong>Accommodating Resistance</strong></td>
+          <td>Adjust leverage so movement is hard where you're strongest, easy where you're weakest.</td>
+          <td>Lower into push-up, push up as far as possible, finish with knee push-up past sticking point</td>
+        </tr>
+        <tr>
+          <td>Step 5</td>
+          <td><strong>Next Progression</strong></td>
+          <td>You own the complete skill. Movement feels heavy yet organized, every rep earned with control.</td>
+          <td>Clean, full push-up</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Why It Works</h4>
+    <ul class="clean-list">
+      <li><strong>Realistic</strong> — you can see, feel, and measure improvement</li>
+      <li><strong>Measurable</strong> — every stage has a clear goal of more control, more load, or more range</li>
+      <li><strong>Adaptable</strong> — use it with any bodyweight exercise that has full range of motion</li>
+      <li><strong>Combined system</strong> — it's progressive overload + specificity combined into one method</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title">The .5 Steps</div>
+      <p>Between each main progression, there are .5 intermediate stages. For example: Progression 1.5 is a Push-Up to Knee Push-Up (accommodating resistance between levels). Progression 2.5 is a Forward Lean Push-Up to Push-Up. These create an infinite progression path with micro-steps — no gap is too wide to bridge.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 24: THE BIG FIVE MOVEMENTS -->
+  <div class="section" id="cal-big5">
+    <div class="section-header">
+      <div class="section-number">30</div>
+      <h3>The Big Five <em>Movements</em></h3>
+    </div>
+
+    <p>Five primary movement patterns form the backbone of the Unstuck system. Each has a full progression path across all training zones.</p>
+
+    <!-- BIG 5: #1 PLANCHE PUSH-UP -->
+    <h4>1. Planche Push-Up (Horizontal Push)</h4>
+    <p>Builds horizontal pressing strength, scapular protraction, and straight arm capacity.</p>
+
+    <h5>Volume Zone Progressions</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Knee Push-Up</td></tr>
+        <tr><td>2</td><td>Push-Up</td></tr>
+        <tr><td>3</td><td>Forward Lean Push-Up</td></tr>
+        <tr><td>4</td><td>P Bar Dips</td></tr>
+        <tr><td>5</td><td>Tuck Planche Push-Up</td></tr>
+      </tbody>
+    </table>
+
+    <h5>Tension Zone (.5 Steps)</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1.5</td><td>Push-Up to Knee Push-Up</td></tr>
+        <tr><td>2.5</td><td>Forward Lean Push-Up to Push-Up</td></tr>
+        <tr><td>3.5</td><td>P Bar Dips to Forward Lean Push-Up</td></tr>
+        <tr><td>4.5</td><td>Tuck Planche Push-Up to P Bar Dips</td></tr>
+        <tr><td>5.5</td><td>Advanced Tuck Planche Push-Up to Tuck Planche Push-Up</td></tr>
+      </tbody>
+    </table>
+
+    <!-- BIG 5: #2 FRONT LEVER ROW -->
+    <h4>2. Front Lever Row (Horizontal Pull)</h4>
+    <p>Develops horizontal pulling strength, scapular retraction, and posterior chain control.</p>
+
+    <h5>Volume Zone Progressions</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Bent Leg Inverted Row</td></tr>
+        <tr><td>2</td><td>Inverted Row</td></tr>
+        <tr><td>3</td><td>Feet Elevated Inverted Row</td></tr>
+        <tr><td>4</td><td>Arc Row</td></tr>
+        <tr><td>5</td><td>Tuck Front Lever Row</td></tr>
+      </tbody>
+    </table>
+
+    <h5>Tension Zone (.5 Steps)</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1.5</td><td>Bent Leg Inverted Row to Inverted Row</td></tr>
+        <tr><td>2.5</td><td>Inverted Row to Feet Elevated Inverted Row</td></tr>
+        <tr><td>3.5</td><td>Feet Elevated Inverted Row to Arc Row</td></tr>
+        <tr><td>4.5</td><td>Arc Row to Tuck Front Lever Row</td></tr>
+        <tr><td>5.5</td><td>Tuck Front Lever Row to Advanced Tuck Front Lever Row</td></tr>
+      </tbody>
+    </table>
+
+    <!-- BIG 5: #3 HANDSTAND PUSH-UP -->
+    <h4>3. Handstand Push-Up (Vertical Push)</h4>
+    <p>Trains vertical pressing strength, balance, and overhead control.</p>
+
+    <h5>Volume Zone Progressions</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Knee Pike Push-Up</td></tr>
+        <tr><td>2</td><td>Bent Leg Pike Push-Up</td></tr>
+        <tr><td>3</td><td>Pike Push-Up</td></tr>
+        <tr><td>4</td><td>Feet Elevated Pike Push-Up</td></tr>
+        <tr><td>5</td><td>Handstand Push-Up</td></tr>
+      </tbody>
+    </table>
+
+    <h5>Tension Zone (.5 Steps)</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1.5</td><td>Bent Leg Pike Push-Up to Knee Pike Push-Up</td></tr>
+        <tr><td>2.5</td><td>Pike Push-Up to Bent Leg Pike Push-Up</td></tr>
+        <tr><td>3.5</td><td>Feet Elevated Pike Push-Up to Pike Push-Up</td></tr>
+        <tr><td>4.5</td><td>Handstand Push-Up to Pike Push-Up</td></tr>
+        <tr><td>5.5</td><td>Forward Lean Handstand Push-Up to Handstand Push-Up</td></tr>
+      </tbody>
+    </table>
+
+    <!-- BIG 5: #4 ONE ARM CHIN-UP -->
+    <h4>4. One Arm Chin-Up (Vertical Pull)</h4>
+    <p>Builds vertical pulling strength through full range of motion.</p>
+
+    <h5>Volume Zone Progressions</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Feet Assisted Chin-Up</td></tr>
+        <tr><td>2</td><td>Chin-Up</td></tr>
+        <tr><td>3</td><td>Mixed Grip Chin-Up</td></tr>
+        <tr><td>4</td><td>Leaning Mixed Grip Chin-Up</td></tr>
+        <tr><td>5</td><td>Archer Chin-Up</td></tr>
+      </tbody>
+    </table>
+
+    <h5>Tension Zone (.5 Steps)</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1.5</td><td>Feet Assisted Chin-Up to Chin-Up</td></tr>
+        <tr><td>2.5</td><td>Chin-Up to Mixed Grip Chin-Up</td></tr>
+        <tr><td>3.5</td><td>Mixed Grip Chin-Up to Leaning Mixed Grip Chin-Up</td></tr>
+        <tr><td>4.5</td><td>Leaning Mixed Grip Chin-Up to Archer Chin-Up</td></tr>
+        <tr><td>5.5</td><td>Archer Chin-Up to Leaning Archer Chin-Up</td></tr>
+      </tbody>
+    </table>
+
+    <!-- BIG 5: #5 PISTOL SQUAT -->
+    <h4>5. Pistol Squat (Squat Pattern)</h4>
+    <p>Improves lower body strength, balance, and ankle mobility.</p>
+
+    <h5>Volume Zone Progressions</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Exercise</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Squat</td></tr>
+        <tr><td>2</td><td>Leaning Squat</td></tr>
+        <tr><td>3</td><td>Staggered Squat</td></tr>
+        <tr><td>4</td><td>Assisted Pistol</td></tr>
+        <tr><td>5</td><td>Pistol Squat</td></tr>
+      </tbody>
+    </table>
+
+    <h5>Tension Zone (.5 Steps)</h5>
+    <table class="protocol-table">
+      <thead>
+        <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1.5</td><td>Leaning Squat to Squat</td></tr>
+        <tr><td>2.5</td><td>Staggered Squat to Leaning Squat</td></tr>
+        <tr><td>3.5</td><td>Assisted Pistol to Staggered Squat</td></tr>
+        <tr><td>4.5</td><td>Pistol Squat to Assisted Pistol Squat</td></tr>
+        <tr><td>5.5</td><td>Heel Up Pistol Squat to Pistol Squat</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 25: THREE TRAINING ZONES -->
+  <div class="section" id="cal-zones">
+    <div class="section-header">
+      <div class="section-number">31</div>
+      <h3>Three Training <em>Zones</em></h3>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-beginner">Zone 1</div>
+        <div class="card-title">Volume Zone</div>
+        <p>Build capacity and coordination. Train movements that are moderately difficult. Focus on clean reps, consistent tempo, higher volume (6-8 reps). This is where most training programs start AND stop. Builds your base and familiarity with each movement.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-intermediate">Zone 2</div>
+        <div class="card-title">Tension Zone</div>
+        <p>Build strength and control. Challenge and load the movement further. Slow down negatives, pause where weakest (4-6 reps). Learn to maintain clean technique when movement feels heavy. You may fail here occasionally — that's okay. This is where you feel progress in real time. <strong>The .5 steps (accommodating resistance between levels) live here.</strong></p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-advanced">Zone 3</div>
+        <div class="card-title">Overload Zone</div>
+        <p>Shape the strength curve. Training becomes art: manipulate leverage and assistance within each rep (2-4 reps). Change how heavy the movement feels at every point in the range of motion.</p>
+      </div>
+    </div>
+
+    <h4>Overload Zone Examples</h4>
+    <ul class="clean-list">
+      <li><strong>Push-Up</strong> — Lower 3/4 down, finish on knees for controlled negative</li>
+      <li><strong>Front Lever Row</strong> — Extend legs farther during pull, bring in slightly near top</li>
+      <li><strong>Pistol/Chin-Up</strong> — Use assisting limb more on way up, less on way down</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title">Inside the Overload Zone</div>
+      <p>Progression 1 expands to 1.1, 1.2, 1.3, 1.4. Progression 1.5 expands to 1.6, 1.7, 1.8, 1.9. Each micro-step adjusts leverage, tempo, or range without breaking form — the path becomes infinite.</p>
+    </div>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Key Insight</div>
+      <p>Most people stay in only the Volume Zone — that's why they plateau. Rotate through all three zones to keep progressing.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 26: PROGRESSIVE OVERLOAD MECHANICS -->
+  <div class="section" id="cal-overload">
+    <div class="section-header">
+      <div class="section-number">32</div>
+      <h3>Progressive <em>Overload</em> Mechanics</h3>
+    </div>
+
+    <h4>The Four Levers of Overload</h4>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-badge badge-strength">Lever 1</div>
+        <div class="card-title">Leverage</div>
+        <p>The most direct way to modify load. Moving your center of mass further from the base of support makes any exercise harder. In a push-up, leaning forward increases shoulder demand dramatically. Use gradually — a one-inch change can be the difference between control and collapse.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Lever 2</div>
+        <div class="card-title">Range of Motion</div>
+        <p>More range = more strength. Training through complete range builds power at your weakest points (bottom and top). Deeper push-ups stretch chest and shoulders under load. Full-depth pistol squats develop ankle and hip stability.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Lever 3</div>
+        <div class="card-title">Tempo</div>
+        <p>Manipulates tension. Slow eccentrics increase load without added weight. Pauses develop stability in weak or tight ranges. Prescription: 3 seconds down, 1 second pause, 1 second up. Key: make the eccentric so heavy it becomes involuntary.</p>
+      </div>
+      <div class="card">
+        <div class="card-badge badge-strength">Lever 4</div>
+        <div class="card-title">Volume & Frequency</div>
+        <p>Volume = sets x reps. Frequency = how often per week. Add reps or sets gradually. Only increase when quality and recovery stay consistent. Smart volume builds adaptation without burnout.</p>
+      </div>
+    </div>
+
+    <h4>The Stability Factor (Hidden 5th Lever)</h4>
+    <p>Reduce points of contact to increase demands. Lunge becomes single-leg squat. Two-arm chin-up becomes mixed grip. Less support means more nervous system must stabilize each rep.</p>
+
+    <h4>How to Know You're Progressing</h4>
+    <ul class="clean-list">
+      <li>Same exercise with more control and less effort</li>
+      <li>Hold positions longer or through larger range</li>
+      <li>Joints feel stronger and more stable</li>
+      <li>Recovery improves between sessions</li>
+      <li>Apply force evenly without compensating</li>
+    </ul>
+
+    <h4>Common Mistakes to Avoid</h4>
+    <ul class="clean-list">
+      <li><strong>Ignoring form under load</strong> — shaking or pain means you've gone too far</li>
+      <li><strong>Training to failure every session</strong> — leave 1-2 reps in the tank</li>
+      <li><strong>Confusing variety with progress</strong> — repetition with intention beats novelty</li>
+      <li><strong>Increasing multiple factors at same time</strong> — choose ONE variable at a time</li>
+    </ul>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Rule</div>
+      <p>Consistency beats novelty. Increase one variable at a time.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 27: SCAPULA & CORE -->
+  <div class="section" id="cal-scapula">
+    <div class="section-header">
+      <div class="section-number">33</div>
+      <h3>Scapula & <em>Core</em></h3>
+    </div>
+
+    <h4>The Scapula Sets the Stage</h4>
+    <p>Four positions: Elevate, Depress, Retract, Protract. These can blend in countless ways — the rule changes by movement type.</p>
+
+    <h4>Static Holds: Oppose Gravity</h4>
+    <ul class="clean-list">
+      <li><strong>Plank</strong> — gravity wants chest to sink, so actively protract</li>
+      <li><strong>Handstand</strong> — gravity pulls down, so elevate scapula to stay tall</li>
+      <li><strong>Front lever</strong> — gravity opens shoulder blades, so retract and engage glutes</li>
+    </ul>
+    <div class="callout">
+      <div class="callout-title">Static Rule</div>
+      <p>In holds, do the opposite of what gravity wants.</p>
+    </div>
+
+    <h4>Dynamic Movements: Go With the Flow</h4>
+    <ul class="clean-list">
+      <li><strong>Push-up</strong> — protract at top, retract at bottom</li>
+      <li><strong>Row</strong> — retract as you pull, protract as you reach</li>
+      <li><strong>Pike push-up</strong> — depress as you bend elbows, elevate at lockout</li>
+    </ul>
+    <div class="callout">
+      <div class="callout-title">Dynamic Rule</div>
+      <p>Let shoulder blades move naturally with the exercise. Freezing them restricts strength and stresses joints.</p>
+    </div>
+
+    <div class="callout-green callout">
+      <div class="callout-title">Why This Matters</div>
+      <p>Static holds teach you to resist gravity. Dynamic reps teach you to move with it. Master both.</p>
+    </div>
+
+    <h4>Core Strength: The Excuse</h4>
+    <p>"You need a stronger core" is what people say when they can't hold a handstand or control a front lever. If you train the Big Five, you develop all the core strength you need — it comes from learning to organize your trunk under load. Real core strength develops through compound movements, not sit-ups or ab circuits.</p>
+
+    <h4>Core Training That Actually Matters</h4>
+    <p>Your trunk should <strong>create movement</strong> (flexion, extension, rotation, side flexion) AND <strong>resist movement</strong> (anti-flexion, anti-extension, anti-rotation, anti-side flexion).</p>
+
+    <p>The Big Five develop most of these naturally:</p>
+    <ul class="clean-list">
+      <li><strong>Stronger push-up</strong> strengthens anti-extension</li>
+      <li><strong>Stronger front lever row</strong> strengthens anti-flexion</li>
+      <li><strong>Stronger pistol squat</strong> strengthens anti-rotation and anti-side flexion</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title">Core Sessions</div>
+      <p>Include flexion + extension + rotation + side flexion as supplemental work. Add opposite patterns (anti-) to fit your needs. These fill the gaps the Big 5 may miss.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 28: WEEKLY PROGRAMMING -->
+  <div class="section" id="cal-programming">
+    <div class="section-header">
+      <div class="section-number">34</div>
+      <h3>Weekly <em>Programming</em></h3>
+    </div>
+
+    <p>Training smarter, not longer. 30-60 minutes of focused, intentional work outperforms 2 hours of random effort.</p>
+
+    <h4>Weekly Structure (6-Day Split)</h4>
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Focus</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Day 1</td>
+          <td><strong>Upper</strong></td>
+          <td>Vertical Push/Pull, Horizontal Push/Pull</td>
+        </tr>
+        <tr>
+          <td>Day 2</td>
+          <td><strong>Lower + Plyo</strong></td>
+          <td>Squats + Plyometrics (Jumps, Sprints)</td>
+        </tr>
+        <tr>
+          <td>Day 3</td>
+          <td><strong>Core + Cardio</strong></td>
+          <td>Flexion, Extension, Rotation, Side-Flexion + Cardio</td>
+        </tr>
+        <tr>
+          <td>Day 4</td>
+          <td><strong>Upper</strong></td>
+          <td>Vertical Push/Pull, Horizontal Push/Pull</td>
+        </tr>
+        <tr>
+          <td>Day 5</td>
+          <td><strong>Lower + Plyo</strong></td>
+          <td>Squats + Plyometrics (Jumps, Sprints)</td>
+        </tr>
+        <tr>
+          <td>Day 6</td>
+          <td><strong>Core + Cardio</strong></td>
+          <td>Flexion, Extension, Rotation, Side-Flexion + Cardio</td>
+        </tr>
+        <tr>
+          <td>Day 7</td>
+          <td><strong>Rest</strong></td>
+          <td>Recovery</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Rep Ranges by Zone</h4>
+    <table class="protocol-table">
+      <thead>
+        <tr>
+          <th>Zone</th>
+          <th>Rep Range</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Volume Phase</td><td>6-8 reps</td></tr>
+        <tr><td>Tension Phase</td><td>4-6 reps</td></tr>
+        <tr><td>Overload Phase</td><td>2-4 reps</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Session Structure (5Ps)</h4>
+    <ul class="clean-list">
+      <li><strong>Prep:</strong> 5-10 minutes</li>
+      <li><strong>Practice:</strong> 5-10 minutes</li>
+      <li><strong>Push:</strong> 15-30 minutes</li>
+      <li><strong>Play:</strong> 5-10 minutes</li>
+      <li><strong>Ponder:</strong> post-session reflection</li>
+    </ul>
+
+    <h4>Building a System That Fits Your Life</h4>
+    <ul class="clean-list">
+      <li>Have 30 minutes? Train for 30.</li>
+      <li>Miss a day? Pick up where you left off.</li>
+      <li>Feeling strong? Move to the harder step.</li>
+      <li>Feeling tired? Focus on negatives or assisted work.</li>
+      <li>The .5 Progression Path adapts intensity to how you feel that day.</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title">Equipment Needed</div>
+      <p>Floor, pull-up bar, rings, parallettes. Optional: bands, weighted vest.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 29: CALISTHENICS FAQ -->
+  <div class="section" id="cal-faq">
+    <div class="section-header">
+      <div class="section-number">35</div>
+      <h3>Calisthenics <em>FAQ</em></h3>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">How often should I train each week?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Ideally 4+ days. Depends on schedule and capacity. Even 2 days/week with the Big 5 = noticeable progress. Consistency beats frequency every time.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Can I build muscle with just calisthenics?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Absolutely. Your body doesn't know the difference between lifting weights and lifting itself. What it responds to is tension. Apply progressive overload through leverage and range of motion and you get the same hypertrophy response as external load.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Am I too tall for calisthenics?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Not at all. Taller athletes deal with more range of motion, longer levers, and greater bodyweight per rep. You need more patience, but the principles stay exactly the same. Example: Brendan at 6'4" achieved a One Arm Chin-Up after 2 years of structured training.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What if I have joint pain or old injuries?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Pain is feedback to adjust, not push through. Modify the exercise to meet your structure. Example: wrist discomfort? Use parallettes. Train at a level where pain is barely noticeable. Think of rehab as strength scaled down. Motion is lotion.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">How do I know when to move to the next progression?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">When you can perform the current progression for clean, consistent reps with minimal form breakdown and no pain. If you can add small challenges (tempo, leverage, range) without losing quality, it's time for the next .5 step.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What about Muscle-Ups?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Fun, impressive, worth training. But they combine a pull and a dip — the weaker phase always limits the stronger one, leading to partial reps. Better to focus on the Big Five for maximal strength. Train muscle-ups once per week as Play. Use feet-assisted single reps with Overload Zone logic.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What about the Human Flag?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">A combination movement: top arm pulls (front lever), bottom arm pushes (planche). Train it as a core pattern on core days. Progressions: Diagonal Flag, then Band Assisted, then Human Flag Hold. 3-5 sets of 5-10 second holds.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Do I need equipment?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">You can do almost everything with a floor, pull-up bar, rings, and parallettes. Bands and a weighted vest are optional and expand how you apply progressive overload.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">What about static holds (planche, front lever)?<span class="faq-chevron">▾</span></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Incredible for strength, control, and stability. Even more powerful when combined with full-range dynamic movements. Planche example: start tuck position, extend to advanced tuck while lowering, push back up to tuck with straight arms. Front lever example: pull up in tuck, lower in advanced tuck, pause 3-5 seconds in horizontal position.</div></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+<button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+<script>
+// FAQ Toggle
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const answer = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-answer').style.maxHeight = '0';
+  });
+
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+// Sidebar toggle (mobile)
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Active nav tracking
+const sections = document.querySelectorAll('.section[id], .hero[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => link.classList.remove('active'));
+      const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(section => observer.observe(section));
+
+// Search
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  const allSections = document.querySelectorAll('.section');
+
+  if (!query) {
+    allSections.forEach(s => s.style.display = '');
+    return;
+  }
+
+  allSections.forEach(section => {
+    const text = section.textContent.toLowerCase();
+    section.style.display = text.includes(query) ? '' : 'none';
+  });
+});
+
+// Close sidebar on overlay click
+document.getElementById('overlay')?.addEventListener('click', toggleSidebar);
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+</script>
+</body>
+</html>

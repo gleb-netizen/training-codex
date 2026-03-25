@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2d2a24"/>
+      <stop offset="100%" stop-color="#1a1814"/>
+    </linearGradient>
+    <linearGradient id="mountain" x1="0.5" y1="1" x2="0.5" y2="0">
+      <stop offset="0%" stop-color="#4a453c"/>
+      <stop offset="100%" stop-color="#6b6259"/>
+    </linearGradient>
+    <clipPath id="squircle">
+      <path d="M256,16 C406,16 496,106 496,256 C496,406 406,496 256,496 C106,496 16,406 16,256 C16,106 106,16 256,16Z"/>
+    </clipPath>
+  </defs>
+  <!-- macOS squircle background -->
+  <path d="M256,16 C406,16 496,106 496,256 C496,406 406,496 256,496 C106,496 16,406 16,256 C16,106 106,16 256,16Z" fill="url(#bg)"/>
+  <!-- Mountain silhouette back -->
+  <polygon points="80,400 200,200 260,280 340,160 460,400" fill="url(#mountain)" clip-path="url(#squircle)" opacity="0.5"/>
+  <!-- Mountain silhouette front -->
+  <polygon points="40,400 180,220 240,300 320,170 500,400" fill="url(#mountain)" clip-path="url(#squircle)"/>
+  <!-- Snow cap accent -->
+  <polygon points="320,170 295,220 345,220" fill="#f5f0e8" clip-path="url(#squircle)" opacity="0.9"/>
+  <polygon points="180,220 162,255 198,255" fill="#f5f0e8" clip-path="url(#squircle)" opacity="0.7"/>
+  <!-- Ember accent line -->
+  <line x1="140" y1="380" x2="400" y2="380" stroke="#c75d3a" stroke-width="3" stroke-linecap="round" clip-path="url(#squircle)" opacity="0.8"/>
+  <!-- "TC" text -->
+  <text x="256" y="340" font-family="Georgia, serif" font-size="120" font-weight="bold" fill="#f5f0e8" text-anchor="middle" dominant-baseline="central" letter-spacing="-4" clip-path="url(#squircle)">TC</text>
+</svg>
