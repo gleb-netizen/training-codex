@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Training Codex — Training Knowledge Base</title>
 <meta name="description" content="Climbing training knowledge base">
 <meta name="theme-color" content="#1a1814">
@@ -186,6 +186,8 @@ body::before {
 .main {
   padding: 48px 64px 120px;
   max-width: 900px;
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
 
 /* === HERO === */
@@ -710,8 +712,12 @@ body::before {
     z-index: 999;
   }
   .sidebar.open ~ .sidebar-overlay { display: block; }
-  .main { padding: 24px; }
-  .hero h2 { font-size: 32px; }
+  .main { padding: 24px 20px 100px; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: max(100px, calc(80px + env(safe-area-inset-bottom))); }
+  .hero { margin-bottom: 36px; padding-bottom: 32px; }
+  .hero h2 { font-size: 30px; }
+  .hero-desc { font-size: 15px; }
+  .hero-stats { flex-wrap: wrap; gap: 16px; }
+  .stat-value { font-size: 18px; }
   .mobile-toggle {
     display: flex !important;
     position: fixed;
@@ -731,7 +737,40 @@ body::before {
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
   .card-grid { grid-template-columns: 1fr; }
-  .hero-stats { flex-wrap: wrap; gap: 20px; }
+  .section h3 { font-size: 24px; }
+  .section h4 { font-size: 19px; }
+  .section { margin-bottom: 40px; }
+  .exercise { padding: 20px 16px; }
+  .exercise-name { font-size: 18px; }
+  .callout { padding: 14px 16px; }
+
+  /* Tables: horizontal scroll on mobile */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px -14px; padding: 0 14px; }
+  .protocol-table { font-size: 12.5px; min-width: 480px; }
+  .protocol-table th, .protocol-table td { padding: 8px 10px; white-space: nowrap; }
+
+  .search-wrapper { margin-bottom: 24px; }
+  .faq-question { padding: 14px 16px; font-size: 14px; }
+  .faq-answer-inner { padding: 0 16px 14px; }
+  .meter-dot { width: 12px; height: 12px; }
+  .meter-label { font-size: 11px; width: 52px; }
+}
+
+@media (max-width: 480px) {
+  .main { padding: 16px 14px 100px; }
+  .hero h2 { font-size: 26px; }
+  .hero-desc { font-size: 14px; }
+  .hero-stats { gap: 12px; }
+  .stat-value { font-size: 16px; }
+  .section h3 { font-size: 22px; }
+  .section h4 { font-size: 17px; margin-top: 24px; }
+  .card { padding: 18px; }
+  .card-title { font-size: 17px; }
+  .exercise { padding: 16px 14px; }
+  .exercise-name { font-size: 17px; }
+  .exercise-meta { gap: 8px; }
+  .numbered-list li { padding-left: 28px; }
+  .faq-question { font-size: 13.5px; }
 }
 
 .mobile-toggle { display: none; }
@@ -1291,7 +1330,7 @@ body::before {
 
     <p>Targeting V0 to V5 (average climber reaches V5 in ~2.5 years). These prioritize movement quality over strength. Train ~2 days/week at this level.</p>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Drill</th>
@@ -1332,7 +1371,7 @@ body::before {
           <td>Main session</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="callout-green callout">
       <div class="callout-title">The Mistake Practice Drill</div>
@@ -1351,7 +1390,7 @@ body::before {
 
     <p>For V4–V6+ climbers experiencing slow progression. These drills address the most common gaps: underdeveloped body tension and limited dynamic movement vocabulary.</p>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Drill</th>
@@ -1380,7 +1419,7 @@ body::before {
           <td>Combine with straight-arm drill for full sequences</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="callout">
       <div class="callout-title">Selection Criteria Used</div>
@@ -1451,7 +1490,7 @@ body::before {
 
     <p>You can't improve every facet of climbing — strength, flexibility, skill — all at once. Divide training into 6–8 week blocks:</p>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Block</th>
@@ -1476,7 +1515,7 @@ body::before {
           <td>Dedicated strength training</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <p>In the long run, this makes gains in numerous areas that you can't accomplish by doing everything simultaneously. It also makes training feel less overwhelming on a tight schedule.</p>
   </div>
@@ -1519,7 +1558,7 @@ body::before {
 
     <h4>The Rankings</h4>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Tier</th>
@@ -1559,7 +1598,7 @@ body::before {
           <td>Only as good as their content. Can't adapt to your daily readiness. A real coach watching you climb — even once — is more valuable than any subscription. Useful if they help you complete training consistently.</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="callout">
       <div class="callout-title">MacLeod on Training Apps</div>
@@ -1744,7 +1783,7 @@ body::before {
     <p>The approach follows a clear progression: <strong>Stretching</strong> (build passive range) → <strong>Active Range of Motion</strong> (own that range with muscle control) → <strong>On-The-Wall Application</strong> (apply it to climbing movement).</p>
 
     <h4>Three Key Stretches</h4>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Stretch</th>
@@ -1773,7 +1812,7 @@ body::before {
           <td>Most intense. Modification: from hands, drive groin toward ground instead of sinking back.</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h4>Active Range of Motion Drills</h4>
     <ul class="clean-list">
@@ -1880,7 +1919,7 @@ body::before {
     </ul>
 
     <h4>Grade 2 (Moderate) Recovery Timeline</h4>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Phase</th>
@@ -1910,7 +1949,7 @@ body::before {
           <td>Full return to climbing</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="callout">
       <div class="callout-title">Acute vs. Gradual Onset</div>
@@ -1980,7 +2019,7 @@ body::before {
     <p>Portable hangboard (like The Nug) + digital force gauge (Tyndec, Bluetooths to phone) + 45lb plate as anchor. Alternatives: plywood with eye bolt + chain, or a sling around your foot.</p>
 
     <h4>Grip Positions</h4>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Grip</th>
@@ -2000,7 +2039,7 @@ body::before {
           <td>80% of 1RM (e.g., ~75 lbs)</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h4>Warm-Up Set</h4>
     <p>Before jumping in — 1 set of 3 progressive reps: ~50% → ~70% → 80%. Confirms you're ready and tissues are warm.</p>
@@ -2064,7 +2103,7 @@ body::before {
       <h3>Protocol <em>Quick Reference</em></h3>
     </div>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Exercise</th>
@@ -2153,7 +2192,7 @@ body::before {
           <td>Power endurance, moderate grade</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="divider"></div>
@@ -2265,7 +2304,7 @@ body::before {
       <h3>Sources</h3>
     </div>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Video</th>
@@ -2335,7 +2374,7 @@ body::before {
           <td>Mental game</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <p style="margin-top: 16px; font-size: 13px; color: var(--slate);">Total source material: ~165 minutes, ~58,500 words across 12 expert videos + Unstuck book. Compiled March 2026.</p>
   </div>
@@ -2443,7 +2482,7 @@ body::before {
     <h4>The 5 Stages</h4>
     <p>Every movement breaks into five stages of mastery. Here's what each stage means, with the push-up as an example:</p>
 
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Stage</th>
@@ -2484,7 +2523,7 @@ body::before {
           <td>Clean, full push-up</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h4>Why It Works</h4>
     <ul class="clean-list">
@@ -2516,7 +2555,7 @@ body::before {
     <p>Builds horizontal pressing strength, scapular protraction, and straight arm capacity.</p>
 
     <h5>Volume Zone Progressions</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Exercise</th></tr>
       </thead>
@@ -2527,10 +2566,10 @@ body::before {
         <tr><td>4</td><td>P Bar Dips</td></tr>
         <tr><td>5</td><td>Tuck Planche Push-Up</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h5>Tension Zone (.5 Steps)</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
       </thead>
@@ -2541,14 +2580,14 @@ body::before {
         <tr><td>4.5</td><td>Tuck Planche Push-Up to P Bar Dips</td></tr>
         <tr><td>5.5</td><td>Advanced Tuck Planche Push-Up to Tuck Planche Push-Up</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <!-- BIG 5: #2 FRONT LEVER ROW -->
     <h4>2. Front Lever Row (Horizontal Pull)</h4>
     <p>Develops horizontal pulling strength, scapular retraction, and posterior chain control.</p>
 
     <h5>Volume Zone Progressions</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Exercise</th></tr>
       </thead>
@@ -2559,10 +2598,10 @@ body::before {
         <tr><td>4</td><td>Arc Row</td></tr>
         <tr><td>5</td><td>Tuck Front Lever Row</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h5>Tension Zone (.5 Steps)</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
       </thead>
@@ -2573,14 +2612,14 @@ body::before {
         <tr><td>4.5</td><td>Arc Row to Tuck Front Lever Row</td></tr>
         <tr><td>5.5</td><td>Tuck Front Lever Row to Advanced Tuck Front Lever Row</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <!-- BIG 5: #3 HANDSTAND PUSH-UP -->
     <h4>3. Handstand Push-Up (Vertical Push)</h4>
     <p>Trains vertical pressing strength, balance, and overhead control.</p>
 
     <h5>Volume Zone Progressions</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Exercise</th></tr>
       </thead>
@@ -2591,10 +2630,10 @@ body::before {
         <tr><td>4</td><td>Feet Elevated Pike Push-Up</td></tr>
         <tr><td>5</td><td>Handstand Push-Up</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h5>Tension Zone (.5 Steps)</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
       </thead>
@@ -2605,14 +2644,14 @@ body::before {
         <tr><td>4.5</td><td>Handstand Push-Up to Pike Push-Up</td></tr>
         <tr><td>5.5</td><td>Forward Lean Handstand Push-Up to Handstand Push-Up</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <!-- BIG 5: #4 ONE ARM CHIN-UP -->
     <h4>4. One Arm Chin-Up (Vertical Pull)</h4>
     <p>Builds vertical pulling strength through full range of motion.</p>
 
     <h5>Volume Zone Progressions</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Exercise</th></tr>
       </thead>
@@ -2623,10 +2662,10 @@ body::before {
         <tr><td>4</td><td>Leaning Mixed Grip Chin-Up</td></tr>
         <tr><td>5</td><td>Archer Chin-Up</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h5>Tension Zone (.5 Steps)</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
       </thead>
@@ -2637,14 +2676,14 @@ body::before {
         <tr><td>4.5</td><td>Leaning Mixed Grip Chin-Up to Archer Chin-Up</td></tr>
         <tr><td>5.5</td><td>Archer Chin-Up to Leaning Archer Chin-Up</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <!-- BIG 5: #5 PISTOL SQUAT -->
     <h4>5. Pistol Squat (Squat Pattern)</h4>
     <p>Improves lower body strength, balance, and ankle mobility.</p>
 
     <h5>Volume Zone Progressions</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Exercise</th></tr>
       </thead>
@@ -2655,10 +2694,10 @@ body::before {
         <tr><td>4</td><td>Assisted Pistol</td></tr>
         <tr><td>5</td><td>Pistol Squat</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h5>Tension Zone (.5 Steps)</h5>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr><th>Step</th><th>Accommodating Resistance Pairing</th></tr>
       </thead>
@@ -2669,7 +2708,7 @@ body::before {
         <tr><td>4.5</td><td>Pistol Squat to Assisted Pistol Squat</td></tr>
         <tr><td>5.5</td><td>Heel Up Pistol Squat to Pistol Squat</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="divider"></div>
@@ -2847,7 +2886,7 @@ body::before {
     <p>Training smarter, not longer. 30-60 minutes of focused, intentional work outperforms 2 hours of random effort.</p>
 
     <h4>Weekly Structure (6-Day Split)</h4>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Day</th>
@@ -2892,10 +2931,10 @@ body::before {
           <td>Recovery</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h4>Rep Ranges by Zone</h4>
-    <table class="protocol-table">
+    <div class="table-scroll"><table class="protocol-table">
       <thead>
         <tr>
           <th>Zone</th>
@@ -2907,7 +2946,7 @@ body::before {
         <tr><td>Tension Phase</td><td>4-6 reps</td></tr>
         <tr><td>Overload Phase</td><td>2-4 reps</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <h4>Session Structure (5Ps)</h4>
     <ul class="clean-list">
